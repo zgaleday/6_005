@@ -15,10 +15,10 @@ public class Quadratic {
     public static Set<Integer> roots(int a, int b, int c) {
         Set<Integer> rootCollection = new HashSet<Integer>();
         boolean perfectSquare = false;
-        long root = -1;                                   // Inside of square root of quad formula
-        long insideRoot = (b * b) - (4 * a * c);        // Calculates the (b^2 -4ac)^.5 portion of quadratic formula
+        double root = -1;                                // Inside of square root of quad formula
+        double insideRoot = (b * b) - (4.0 * a * c);     // Calculates the (b^2 -4ac)^.5 portion of quadratic formula
         long denominator = 2 * a;                        // Calculates the denominator of the quad equation
-        for (long i =0; i <= insideRoot; i++) {
+        for (double i = 0; i <= insideRoot; i++) {
             if (i * i == insideRoot) { 
                 root = i;
                 perfectSquare = true;
@@ -26,8 +26,8 @@ public class Quadratic {
             }
         }
         if (perfectSquare) {
-            long topPos = -b + root;                 // Num of quad equation with addition
-            long topNeg = -b - root;                 // Num of quad equation with subtraction
+            double topPos = -b + root;                 // Num of quad equation with addition
+            double topNeg = -b - root;                 // Num of quad equation with subtraction
             if (topPos / denominator == (double) topPos / denominator)
                 rootCollection.add((int)(topPos / denominator));
             if (topNeg / denominator == (double) topNeg / denominator)  
@@ -42,9 +42,9 @@ public class Quadratic {
      * @param args command-line arguments
      */
     public static void main(String[] args) {
-        System.out.println("For the equation x^2 - 4x + 3 = 0, the possible solutions are:");
-        Set<Integer> result = roots(1, -4, 3);
-        System.out.println(result);
+        int r1 =  45_000; // a root ~45,000 means c is ~2,000,000,000, which is close to the maximum integer 2^31 - 1
+        int r2 = -45_000;
+        Set<Integer> result = roots(1, -r1-r2, r1*r2);
     }
 
     /* Copyright (c) 2016 MIT 6.005 course staff, all rights reserved.
