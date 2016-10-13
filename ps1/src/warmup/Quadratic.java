@@ -1,6 +1,7 @@
 package warmup;
 
 import java.util.Set;
+import java.util.HashSet;
 
 public class Quadratic {
 
@@ -12,7 +13,27 @@ public class Quadratic {
      * @return all integers x such that ax^2 + bx + c = 0.
      */
     public static Set<Integer> roots(int a, int b, int c) {
-        throw new RuntimeException("not implemented yet;"); // TODO: delete this line when you implement it
+        Set<Integer> rootCollection = new HashSet<Integer>();
+        boolean perfectSquare = false;
+        long root = -1;                                   // Inside of square root of quad formula
+        long insideRoot = (b * b) - (4 * a * c);        // Calculates the (b^2 -4ac)^.5 portion of quadratic formula
+        long denominator = 2 * a;                        // Calculates the denominator of the quad equation
+        for (long i =0; i <= insideRoot; i++) {
+            if (i * i == insideRoot) { 
+                root = i;
+                perfectSquare = true;
+                break;
+            }
+        }
+        if (perfectSquare) {
+            long topPos = -b + root;                 // Num of quad equation with addition
+            long topNeg = -b - root;                 // Num of quad equation with subtraction
+            if (topPos / denominator == (double) topPos / denominator)
+                rootCollection.add((int)(topPos / denominator));
+            if (topNeg / denominator == (double) topNeg / denominator)  
+                rootCollection.add((int)(topNeg / denominator));
+        }
+        return rootCollection;
     }
 
     
