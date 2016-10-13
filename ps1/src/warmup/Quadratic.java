@@ -15,20 +15,20 @@ public class Quadratic {
     public static Set<Integer> roots(int a, int b, int c) {
         Set<Integer> rootCollection = new HashSet<Integer>();
         boolean perfectSquare = false;
-        double root = -1;                                // Inside of square root of quad formula
+        long root = -1;                                // Inside of square root of quad formula
         double insideRoot = (b * b) - (4.0 * a * c);     // Calculates the (b^2 -4ac)^.5 portion of quadratic formula
         long denominator = 2 * a;                        // Calculates the denominator of the quad equation
         for (double i = 0; i <= insideRoot; i++) {
             if (i * i == insideRoot) { 
-                root = i;
+                root = (long) i;
                 perfectSquare = true;
                 break;
             }
         }
         if (perfectSquare) {
-            double topPos = -b + root;                 // Num of quad equation with addition
-            double topNeg = -b - root;                 // Num of quad equation with subtraction
-            if (topPos / denominator == (double) topPos / denominator)
+            long topPos = -b + root;                 // Num of quad equation with addition
+            long topNeg = -b - root;                 // Num of quad equation with subtraction
+            if (topPos / denominator ==  (double) topPos / denominator)
                 rootCollection.add((int)(topPos / denominator));
             if (topNeg / denominator == (double) topNeg / denominator)  
                 rootCollection.add((int)(topNeg / denominator));
