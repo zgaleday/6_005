@@ -13,7 +13,7 @@ public class FilterTest {
     /*
      * Paritions for writtenBy Tests:
      * List: not mutated
-     * Tweets: 0 by author, multiple by author
+     * Tweets: 0 by author, multiple by author appear in same order
      * Formatting name: ensure that list is same regardless of author capitalization in call
      */
     
@@ -53,8 +53,8 @@ public class FilterTest {
         List<Tweet> writtenBy = Filter.writtenBy(Arrays.asList(tweet1, tweet2, tweet3), "alyssa");
         
         assertEquals("expected singleton list", 2, writtenBy.size());
-        assertTrue("expected list to contain tweet", writtenBy.contains(tweet1));
-        assertTrue("expected list to contain tweet", writtenBy.contains(tweet3));
+        assertEquals("expected list to contain tweet", writtenBy.get(0).equals(tweet1));
+        assertTrue("expected list to contain tweet", writtenBy.get(1).equals(tweet3));
     }
     
     @Test
