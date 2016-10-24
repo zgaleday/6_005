@@ -11,20 +11,73 @@ import org.junit.Test;
 public class ExtractTest {
 
     /*
-     * TODO: your testing strategies for these methods should go here.
-     * Make sure you have partitions.
+     * Tests for the getTimespan method of Extract.
+     * Tests edge case behavior with 1, 2 tweets
+     * Tests on max and min values for Instant
+     * Tests on tweets with same Instant
+     * Tests that the tweet list is not mutated
      */
+    
     
     private static final Instant d1 = Instant.parse("2016-02-17T10:00:00Z");
     private static final Instant d2 = Instant.parse("2016-02-17T11:00:00Z");
+    private static final Instant d3 = Instant.MIN;
+    private static final Instant d4 = Instant.MAX;
     
     private static final Tweet tweet1 = new Tweet(1, "alyssa", "is it reasonable to talk about rivest so much?", d1);
     private static final Tweet tweet2 = new Tweet(2, "bbitdiddle", "rivest talk in 30 minutes #hype", d2);
+    private static final Tweet tweetMin = new Tweet(3, "alyssa", "is it reasonable to talk about rivest so much?", d3);
+    private static final Tweet tweetMax = new Tweet(4, "bbitdiddle", "rivest talk in 30 minutes #hype", d4);
+    private static final Tweet tweet5 = new Tweet(5, "alyssa", "is it reasonable to talk about rivest so much?", d1);
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
         assert false; // make sure assertions are enabled with VM argument: -ea
     }
+       
+    @Test
+    public void testImmutableTweets() {
+        Tweet[] tweets = {tweet1, tweet2};
+        Tweet[] tweets2 = {tweet1, tweet2};
+        
+        assertTrue("equals", Arrays.equals(tweets, tweets2));
+        Extract.getTimespan(Arrays.asList(tweets2));
+        
+        assertTrue("immutable", Arrays.equals(tweets, tweets2)); //Ensure list immutable
+    }
+    
+    @Test
+    public void testMinInstant() {
+        Timespan timespan = Extract.getTimespan(Arrays.asList(tweet1, tweetMin));
+        
+        assertEquals("expected start", d3, timespan.getStart());  //Test can parse min Instant
+        assertEquals("expected end", d1, timespan.getEnd());
+    }
+    
+    @Test
+    public void testMaxInstant() {
+        Timespan timespan = Extract.getTimespan(Arrays.asList(tweet1, tweetMax));
+        
+        assertEquals("expected start", d1, timespan.getStart());
+        assertEquals("expected end", d4, timespan.getEnd());                //Test can parse max Instant
+    }
+    
+    @Test
+    public void testMaxTimespan() {
+        Timespan timespan = Extract.getTimespan(Arrays.asList(tweetMin, tweetMax));
+        
+        assertEquals("expected start", d3, timespan.getStart());
+        assertEquals("expected end", d4, timespan.getEnd());                //Test can parse with min and max instants 
+    }
+    
+    @Test
+    public void testSameInstant() {
+        Timespan timespan = Extract.getTimespan(Arrays.asList(tweet1, tweet5));
+        
+        //Test that Timespan start and stops at same Instant
+        assertTrue("start equals end", timespan.getStart().equals(timespan.getEnd()));
+    }
+    
     
     @Test
     public void testGetTimespanTwoTweets() {
