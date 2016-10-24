@@ -11,18 +11,27 @@ import org.junit.Test;
 public class FilterTest {
 
     /*
-     * Paritions for writtenBy Tests:
+     * Paritions for writtenBy tests:
      * List: not mutated
      * Tweets: 0 by author, multiple by author appear in same order
      * Formatting name: ensure that list is same regardless of author capitalization in call
+     * 
+     * Partitions for inTimespan tests:
+     * List: Not mutated, empty
+     * TweetsL 0 in timespan,  multiple in timespan
+     * Timespan: start and stop at same point as tweet
      */
     
     private static final Instant d1 = Instant.parse("2016-02-17T10:00:00Z");
     private static final Instant d2 = Instant.parse("2016-02-17T11:00:00Z");
+    private static final Instant dAfter = Instant.parse("2016-02-17T12:00:00Z");
+    private static final Instant dBefore = Instant.parse("2016-02-17T09:00:00Z");
     
     private static final Tweet tweet1 = new Tweet(1, "alyssa", "is it reasonable to talk about rivest so much?", d1);
     private static final Tweet tweet2 = new Tweet(2, "bbitdiddle", "rivest talk in 30 minutes #hype", d2);
     private static final Tweet tweet3 = new Tweet(3, "alyssa", "this is my second tweet", d2);
+    private static final Tweet tweetBefore = new Tweet(4, " bbitdiddle", " cool rivest talk in 30 minutes #hype", dBefore);
+    private static final Tweet tweetAfter = new Tweet(5, "alyssa", "boot this is my second tweet", dAfter);
 
     
     @Test(expected=AssertionError.class)
@@ -85,6 +94,47 @@ public class FilterTest {
         assertFalse("expected non-empty list", inTimespan.isEmpty());
         assertTrue("expected list to contain tweets", inTimespan.containsAll(Arrays.asList(tweet1, tweet2)));
         assertEquals("expected same order", 0, inTimespan.indexOf(tweet1));
+    }
+    
+    @Test
+    public void testInTimespanMultipleTweetsBracketed() {
+        Instant testStart = Instant.parse("2016-02-17T09:00:00Z");
+        Instant testEnd = Instant.parse("2016-02-17T12:00:00Z");
+        
+        List<Tweet> inTimespan = Filter.inTimespan(Arrays.asList(tweetBefore, tweetAfter), new Timespan(testStart, testEnd));
+        
+        assertTrue("expected non-empty list", inTimespan.isEmpty());
+    }
+    
+    @Test
+    public void testInTimespanEmptyList() {
+        Instant testStart = Instant.parse("2016-02-17T09:00:00Z");
+        Instant testEnd = Instant.parse("2016-02-17T12:00:00Z");
+        
+        List<Tweet> inTimespan = Filter.inTimespan(Arrays.asList(), new Timespan(testStart, testEnd));
+        
+        assertTrue("expected non-empty list", inTimespan.isEmpty());
+    }
+    
+    @Test
+    public void testInTimespanSinglePoint() {
+    
+        List<Tweet> inTimespan = Filter.inTimespan(Arrays.asList(tweet1), new Timespan(d1, d2));
+        
+        assertTrue("expected contains tweet at same point", inTimespan.contains(tweet1));
+    }
+    
+    @Test
+    public void testInTimespanNotMutabateList() {
+        Instant testStart = Instant.parse("2016-02-17T09:00:00Z");
+        Instant testEnd = Instant.parse("2016-02-17T12:00:00Z");
+        Tweet[] tweets = {tweet1, tweet2};
+        Tweet[] tweets2 = {tweet1, tweet2};
+        
+        assertTrue("equals", Arrays.equals(tweets, tweets2));
+        List<Tweet> inTimespan = Filter.inTimespan(Arrays.asList(tweet2), new Timespan(testStart, testEnd));
+
+        assertTrue("immutable", Arrays.equals(tweets, tweets2)); //Ensure list immutable
     }
     
     @Test
