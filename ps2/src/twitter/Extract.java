@@ -2,7 +2,10 @@ package twitter;
 
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.HashSet;
 import java.time.Instant;
+import java.util.Scanner;
 
 /**
  * Extract consists of methods that extract information from a list of tweets.
@@ -53,7 +56,19 @@ public class Extract {
      *         include a username at most once.
      */
     public static Set<String> getMentionedUsers(List<Tweet> tweets) {
-        throw new RuntimeException("not implemented");
+        Set<String> mentionedUsers = new HashSet<String>();
+        Pattern myPattern = Pattern.compile("[^a-zA-Z0-9-_][@][a-zA-Z0-9-_]+");
+        for (Tweet tweet : tweets) {
+            Scanner scanner = new Scanner(tweet.getText());
+            String nextMention = scanner.findInLine(myPattern);
+            while (nextMention != null) {
+                mentionedUsers.add(nextMention.substring(2).toLowerCase());
+                nextMention = scanner.findInLine(myPattern);
+            }
+            scanner.close();
+        }
+        
+        return mentionedUsers;
     }
 
     /* Copyright (c) 2007-2016 MIT 6.005 course staff, all rights reserved.
