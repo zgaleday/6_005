@@ -2,6 +2,7 @@ package twitter;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.time.Instant;
 
 /**
  * Filter consists of methods that filter a list of tweets for those matching a
@@ -45,7 +46,17 @@ public class Filter {
      *         in the same order as in the input list.
      */
     public static List<Tweet> inTimespan(List<Tweet> tweets, Timespan timespan) {
-        throw new RuntimeException("not implemented");
+        Instant start = timespan.getStart();
+        Instant end = timespan.getEnd();
+        List<Tweet> inTimespan = new ArrayList<Tweet>();
+        
+        for (Tweet tweet : tweets) {
+            boolean startCompare = start.compareTo(tweet.getTimestamp()) <= 0;
+            boolean endCompare = end.compareTo(tweet.getTimestamp()) >= 0;
+            if (startCompare && endCompare)
+                inTimespan.add(tweet);                
+        }
+        return inTimespan;
     }
 
     /**
