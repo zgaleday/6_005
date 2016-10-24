@@ -53,7 +53,7 @@ public class FilterTest {
         List<Tweet> writtenBy = Filter.writtenBy(Arrays.asList(tweet1, tweet2, tweet3), "alyssa");
         
         assertEquals("expected singleton list", 2, writtenBy.size());
-        assertEquals("expected list to contain tweet", writtenBy.get(0).equals(tweet1));
+        assertTrue("expected list to contain tweet", writtenBy.get(0).equals(tweet1));
         assertTrue("expected list to contain tweet", writtenBy.get(1).equals(tweet3));
     }
     
