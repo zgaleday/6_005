@@ -98,12 +98,10 @@ public class FilterTest {
     
     @Test
     public void testInTimespanMultipleTweetsBracketed() {
-        Instant testStart = Instant.parse("2016-02-17T09:00:00Z");
-        Instant testEnd = Instant.parse("2016-02-17T12:00:00Z");
+
+        List<Tweet> inTimespan = Filter.inTimespan(Arrays.asList(tweetBefore, tweetAfter), new Timespan(d1, d2));
         
-        List<Tweet> inTimespan = Filter.inTimespan(Arrays.asList(tweetBefore, tweetAfter), new Timespan(testStart, testEnd));
-        
-        assertTrue("expected non-empty list", inTimespan.isEmpty());
+        assertTrue("expected empty list", inTimespan.isEmpty());
     }
     
     @Test
