@@ -12,10 +12,22 @@ public class ExtractTest {
 
     /*
      * Tests for the getTimespan method of Extract.
+     * 
      * Tests edge case behavior with 1, 2 tweets
      * Tests on max and min values for Instant
      * Tests on tweets with same Instant
      * Tests that the tweet list is not mutated
+     * 
+     * Tests for the getMentionedUsers method of Extract.
+     * 
+     * Tests with no tweets
+     * Tests that tweet list no mutated
+     * Tests mention as first char
+     * Tests with multiple occurrences of same user
+     * Tests with multiple users
+     * tests with no users.
+     * Tests with same user with different casing
+     * Tests to make sure that no @ proceeded by valid char included.
      */
     
     
@@ -29,6 +41,10 @@ public class ExtractTest {
     private static final Tweet tweetMin = new Tweet(3, "alyssa", "is it reasonable to talk about rivest so much?", d3);
     private static final Tweet tweetMax = new Tweet(4, "bbitdiddle", "rivest talk in 30 minutes #hype", d4);
     private static final Tweet tweet5 = new Tweet(5, "alyssa", "is it reasonable to talk about rivest so much?", d1);
+    private static final Tweet tweetIndex = new Tweet(6, "alyssa", "@abc", d1);
+    private static final Tweet tweetUpperLower = new Tweet(7, "alyssa", "I like @abc and @AbC", d1);
+    private static final Tweet tweetMultiple = new Tweet(8, "alyssa", "Man I feel @abc and @def", d1);
+    private static final Tweet tweetParser = new Tweet(9, "alyssa", "cool@abc.com def @efc", d1);
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
@@ -36,7 +52,7 @@ public class ExtractTest {
     }
        
     @Test
-    public void testImmutableTweets() {
+    public void testImmutableTweetsTime() {
         Tweet[] tweets = {tweet1, tweet2};
         Tweet[] tweets2 = {tweet1, tweet2};
         
@@ -93,6 +109,50 @@ public class ExtractTest {
         
         assertTrue("expected empty set", mentionedUsers.isEmpty());
     }
+    
+    @Test
+    public void testImmutableTweetsMention() {
+        Tweet[] tweets = {tweet1, tweet2};
+        Tweet[] tweets2 = {tweet1, tweet2};
+        
+        assertTrue("equals", Arrays.equals(tweets, tweets2));
+        Extract.getMentionedUsers(Arrays.asList(tweets2));
+        
+        assertTrue("immutable timespan", Arrays.equals(tweets, tweets2)); //Ensure list immutable
+    }
+    
+    @Test
+    public void testGetMentionedUsersIsSet() {
+        Set<String> mentionedUsers = Extract.getMentionedUsers(Arrays.asList(tweetUpperLower));
+        
+        assertTrue("expected one user", mentionedUsers.size() == 1);        //Only one user
+        for (String user : mentionedUsers) {
+            assertEquals("expected user once", user.toLowerCase(), "abc");  //Set property
+        }
+    }
+    
+    @Test
+    public void testGetMentionedUsersMultipleUsers() {
+        Set<String> mentionedUsers = Extract.getMentionedUsers(Arrays.asList(tweetMultiple));
+        
+        assertTrue("expected one user", mentionedUsers.size() == 2);        //Only one user
+        for (String user : mentionedUsers) {
+            assertTrue("expected user once", user.toLowerCase().equals("abc") ||
+                    user.toLowerCase().equals("def"));  //Set property
+        }
+    }
+    
+    @Test
+    public void testGetMentionedUsersIgnoresBadAts() {
+        Set<String> mentionedUsers = Extract.getMentionedUsers(Arrays.asList(tweetParser));
+        
+        assertTrue("expected one user", mentionedUsers.size() == 1);        //Only one user
+        for (String user : mentionedUsers) {
+            assertTrue("expected user once", user.toLowerCase().equals("def"));  //Set property
+        }
+    }
+    
+    
 
     /*
      * Warning: all the tests you write here must be runnable against any
