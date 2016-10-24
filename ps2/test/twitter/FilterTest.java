@@ -11,8 +11,10 @@ import org.junit.Test;
 public class FilterTest {
 
     /*
-     * TODO: your testing strategies for these methods should go here.
-     * Make sure you have partitions.
+     * Paritions for writtenBy Tests:
+     * List: not mutated
+     * Tweets: 0 by author, multiple by author
+     * Formatting name: ensure that list is same regardless of author capitalization in call
      */
     
     private static final Instant d1 = Instant.parse("2016-02-17T10:00:00Z");
@@ -20,6 +22,8 @@ public class FilterTest {
     
     private static final Tweet tweet1 = new Tweet(1, "alyssa", "is it reasonable to talk about rivest so much?", d1);
     private static final Tweet tweet2 = new Tweet(2, "bbitdiddle", "rivest talk in 30 minutes #hype", d2);
+    private static final Tweet tweet3 = new Tweet(3, "alyssa", "this is my second tweet", d2);
+
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
@@ -32,6 +36,43 @@ public class FilterTest {
         
         assertEquals("expected singleton list", 1, writtenBy.size());
         assertTrue("expected list to contain tweet", writtenBy.contains(tweet1));
+    }
+    
+    @Test
+    public void testWrittenByAuthorFormat() {
+        List<Tweet> writtenByLower = Filter.writtenBy(Arrays.asList(tweet1, tweet2), "alyssa");
+        List<Tweet> writtenByUpper = Filter.writtenBy(Arrays.asList(tweet1, tweet2), "ALYSSA");
+        
+        assertEquals("expected singleton list", 1, writtenByLower.size());
+        assertTrue("expected list to contain tweet", writtenByLower.contains(tweet1));
+        assertTrue("two results should be equal", writtenByLower.equals(writtenByUpper));
+    }
+    
+    @Test
+    public void testWrittenByMultipleTweetsSingleAuthor() {
+        List<Tweet> writtenBy = Filter.writtenBy(Arrays.asList(tweet1, tweet2, tweet3), "alyssa");
+        
+        assertEquals("expected singleton list", 2, writtenBy.size());
+        assertTrue("expected list to contain tweet", writtenBy.contains(tweet1));
+        assertTrue("expected list to contain tweet", writtenBy.contains(tweet3));
+    }
+    
+    @Test
+    public void testWrittenNoMatches() {
+        List<Tweet> writtenBy = Filter.writtenBy(Arrays.asList(tweet2), "alyssa");
+        
+        assertEquals("expected singleton list", 0, writtenBy.size());
+    }
+    
+    @Test
+    public void testWrittenByNotMutabateList() {
+        Tweet[] tweets = {tweet1, tweet2};
+        Tweet[] tweets2 = {tweet1, tweet2};
+        
+        assertTrue("equals", Arrays.equals(tweets, tweets2));
+        Filter.writtenBy(Arrays.asList(tweets2), "alyssa");
+        
+        assertTrue("immutable", Arrays.equals(tweets, tweets2)); //Ensure list immutable
     }
     
     @Test
