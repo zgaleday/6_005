@@ -117,7 +117,6 @@ public class ExtractTest {
         
         assertTrue("equals", Arrays.equals(tweets, tweets2));
         Extract.getMentionedUsers(Arrays.asList(tweets2));
-        
         assertTrue("immutable timespan", Arrays.equals(tweets, tweets2)); //Ensure list immutable
     }
     
@@ -148,7 +147,7 @@ public class ExtractTest {
         
         assertTrue("expected one user", mentionedUsers.size() == 1);        //Only one user
         for (String user : mentionedUsers) {
-            assertTrue("expected user once", user.toLowerCase().equals("def"));  //Set property
+            assertTrue("expected user once", user.toLowerCase().equals("efc"));  //Set property
         }
     }
     
