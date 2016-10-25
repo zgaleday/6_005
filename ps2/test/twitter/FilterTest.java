@@ -20,6 +20,10 @@ public class FilterTest {
      * List: Not mutated, empty
      * TweetsL 0 in timespan,  multiple in timespan
      * Timespan: start and stop at same point as tweet
+     * 
+     * Partitions for contains tests:
+     * tweets: empty, not mutated, return same order (no matter word order)
+     * words: empty, mutiple (matches all), check different cases
      */
     
     private static final Instant d1 = Instant.parse("2016-02-17T10:00:00Z");
@@ -142,6 +146,42 @@ public class FilterTest {
         assertFalse("expected non-empty list", containing.isEmpty());
         assertTrue("expected list to contain tweets", containing.containsAll(Arrays.asList(tweet1, tweet2)));
         assertEquals("expected same order", 0, containing.indexOf(tweet1));
+    }
+    
+    @Test
+    public void testContainingMultiWords() {
+        List<Tweet> containing = Filter.containing(Arrays.asList(tweet1, tweet2), Arrays.asList("30", "reasonable"));
+        
+        assertFalse("expected non-empty list", containing.isEmpty());
+        assertTrue("expected list to contain tweets", containing.containsAll(Arrays.asList(tweet1, tweet2)));
+        assertEquals("expected same order", 0, containing.indexOf(tweet1));
+    }
+    
+    @Test
+    public void testContainingCase() {
+        List<Tweet> containing = Filter.containing(Arrays.asList(tweet1, tweet2), Arrays.asList("TALK"));
+        
+        assertFalse("expected non-empty list", containing.isEmpty());
+        assertTrue("expected list to contain tweets", containing.containsAll(Arrays.asList(tweet1, tweet2)));
+        assertEquals("expected same order", 0, containing.indexOf(tweet1));
+    }
+    
+    @Test
+    public void testContainingEmptyWords() {
+        List<Tweet> containing = Filter.containing(Arrays.asList(tweet1, tweet2), Arrays.asList());
+        
+        assertTrue("expected empty list", containing.isEmpty());
+    }
+    
+    @Test
+    public void testContainingNotMutabateList() {
+        Tweet[] tweets = {tweet1, tweet2};
+        Tweet[] tweets2 = {tweet1, tweet2};
+        assertTrue("equals", Arrays.equals(tweets, tweets2));
+        
+        Filter.containing(Arrays.asList(tweets2), Arrays.asList("talk"));
+       
+        assertTrue("immutable", Arrays.equals(tweets, tweets2)); //Ensure list immutable
     }
 
     /*
