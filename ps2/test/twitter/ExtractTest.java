@@ -45,6 +45,7 @@ public class ExtractTest {
     private static final Tweet tweetUpperLower = new Tweet(7, "alyssa", "I like @abc and @AbC", d1);
     private static final Tweet tweetMultiple = new Tweet(8, "alyssa", "Man I feel @abc and @def", d1);
     private static final Tweet tweetParser = new Tweet(9, "alyssa", "cool@abc.com def @efc", d1);
+    private static final Tweet tweet7 = new Tweet(7, "Alyssa", "@bbitdiddle", d1);
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
@@ -101,6 +102,13 @@ public class ExtractTest {
         
         assertEquals("expected start", d1, timespan.getStart());
         assertEquals("expected end", d2, timespan.getEnd());
+    }
+    @Test
+    public void testGetMentionedUsersBeginLine() {
+        
+        Set<String> mentionedUsers = Extract.getMentionedUsers(Arrays.asList(tweet7));
+        
+        assertEquals("expected empty set", 1, mentionedUsers.size());
     }
     
     @Test
