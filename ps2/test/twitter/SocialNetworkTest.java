@@ -58,10 +58,11 @@ public class SocialNetworkTest {
         Map<String, Set<String>> followsGraph = SocialNetwork.guessFollowsGraph(Arrays.asList(tweet5, tweet6));
         
         assertTrue("expect non-empty Map", followsGraph.size() >= 1);
-        for (String user : followsGraph.keySet())
+        for (String user : followsGraph.keySet()) {
             if (user.toLowerCase().equals("alyssa"))
                 assertEquals("expected one follow", 1, followsGraph.get(user).size());
-        assertEquals("user not in map", 0, 1);
+            else { assertEquals("user not in map", 0, 1); }
+        }
     }
     
     @Test
@@ -71,7 +72,8 @@ public class SocialNetworkTest {
         for (String user : followsGraph.keySet())
             if (user.toLowerCase().equals("alyssa"))
                 assertEquals("expected one follow", 3, followsGraph.get(user).size());
-        assertEquals("user not in map", 0, 1);
+            else
+                assertEquals("user not in map", 0, 1);
     }
     
     @Test
@@ -85,9 +87,9 @@ public class SocialNetworkTest {
     public void testGuessFollowsSelfAt() {
         Map<String, Set<String>> followsGraph = SocialNetwork.guessFollowsGraph(Arrays.asList(tweet4));
         
-        if (followsGraph.containsKey("alyssa"))
+        if (followsGraph.containsKey("alyssa")) {
             assertEquals("author supposed to have no follows", 0, followsGraph.get("alyssa").size());
-        else
+        }else
             assertTrue("expected empty graph", followsGraph.isEmpty());
     }
     
