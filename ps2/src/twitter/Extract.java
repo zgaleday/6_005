@@ -62,7 +62,10 @@ public class Extract {
             Scanner scanner = new Scanner(tweet.getText());
             String nextMention = scanner.findInLine(myPattern);
             while (nextMention != null) {
-                mentionedUsers.add(nextMention.substring(2).toLowerCase());
+                if (nextMention.charAt(1) == '@' )
+                    mentionedUsers.add(nextMention.substring(2).toLowerCase());
+                else
+                    mentionedUsers.add(nextMention.substring(1).toLowerCase());
                 nextMention = scanner.findInLine(myPattern);
             }
             scanner.close();
