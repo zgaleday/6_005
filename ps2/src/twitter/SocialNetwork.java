@@ -2,6 +2,10 @@ package twitter;
 
 import java.util.List;
 import java.util.Map;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -37,8 +41,31 @@ public class SocialNetwork {
      *         All the Twitter usernames in the returned social network must be
      *         either authors or @-mentions in the list of tweets.
      */
+    
+    public static void main(String[] args) {
+        Instant d1 = Instant.parse("2016-02-17T10:00:00Z");
+        Tweet tweet5 = new Tweet(5, "alyssa", "@bbitdiddle", d1);
+        Tweet tweet6 = new Tweet(6, "alyssa", "@Bbitdiddle", d1);
+        Map<String, Set<String>> followsGraph = guessFollowsGraph(Arrays.asList(tweet5, tweet6));
+        for (String follow : followsGraph.get("alyssa"))
+            System.out.println(follow);
+    }
     public static Map<String, Set<String>> guessFollowsGraph(List<Tweet> tweets) {
-        throw new RuntimeException("not implemented");
+        Map<String, Set<String>> followsGraph = new HashMap<String, Set<String>>();
+            for (Tweet tweet : tweets) {
+                String author = tweet.getAuthor().toLowerCase();
+                if (!followsGraph.containsKey(author)) {
+                    Set<String> mySet = new HashSet<String>();
+                    followsGraph.put(author, mySet);
+                }
+                for (String mention : Extract.getMentionedUsers(Arrays.asList(tweet))) {
+                    mention = mention.toLowerCase();
+                    if (!mention.equals(author)) {
+                        followsGraph.get(author).add(mention);
+                    }     
+                }
+            }
+        return followsGraph;
     }
 
     /**
