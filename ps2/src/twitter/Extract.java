@@ -57,7 +57,7 @@ public class Extract {
      */
     public static Set<String> getMentionedUsers(List<Tweet> tweets) {
         Set<String> mentionedUsers = new HashSet<String>();
-        Pattern myPattern = Pattern.compile("[^a-zA-Z0-9-_][@][a-zA-Z0-9-_]+");
+        Pattern myPattern = Pattern.compile("(^|[^a-zA-Z0-9-_])[@][a-zA-Z0-9-_]+");
         for (Tweet tweet : tweets) {
             Scanner scanner = new Scanner(tweet.getText());
             String nextMention = scanner.findInLine(myPattern);
