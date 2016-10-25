@@ -75,7 +75,16 @@ public class Filter {
      *         same order as in the input list.
      */
     public static List<Tweet> containing(List<Tweet> tweets, List<String> words) {
-        throw new RuntimeException("not implemented");
+        List<Tweet> contains = new ArrayList<Tweet>();
+        
+        for (Tweet tweet : tweets) {
+            for (String word : words) {
+                if (tweet.getText().toLowerCase().contains(word.toLowerCase())) 
+                    contains.add(tweet);
+            }
+        }
+        
+        return contains;
     }
 
     /* Copyright (c) 2007-2016 MIT 6.005 course staff, all rights reserved.
