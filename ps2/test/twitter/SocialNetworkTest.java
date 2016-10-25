@@ -57,6 +57,7 @@ public class SocialNetworkTest {
     public void testGuessFollowsGraphFollowCase() {
         Map<String, Set<String>> followsGraph = SocialNetwork.guessFollowsGraph(Arrays.asList(tweet5, tweet6));
         
+        assertTrue("expect non-empty Map", followsGraph.size() >= 1);
         for (String user : followsGraph.keySet())
             if (user.toLowerCase().equals("alyssa"))
                 assertEquals("expected one follow", 1, followsGraph.get(user).size());
