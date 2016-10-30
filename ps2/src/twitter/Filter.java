@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.time.Instant;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.Scanner;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Filter consists of methods that filter a list of tweets for those matching a
@@ -100,10 +103,28 @@ public class Filter {
      * 
      * @return hashtagMap
      *          a map that contains all hashtags (as defined above) seen in the tweets
-     *          and the authors who wrote the tweets containing the hashtags
+     *          and the authors who wrote the tweets containing the hashtags. Authors are 
+     *          case insensitive and should only appear once in each hashtags entry. 
      */
-    public static Map<String, List<String>> usedHashtag(List<Tweet> tweets) {
-        throw new RuntimeException("not implemented");
+    public static Map<String, HashSet<String>> usedHashtag(List<Tweet> tweets) {
+        Map<String, HashSet<String>> usedHashtags = new HashMap<String, HashSet<String>>();
+        Pattern myPattern = Pattern.compile("(^|[^a-zA-Z0-9-_])[#][a-zA-Z0-9-_]+");    
+        for (Tweet tweet : tweets) {
+            Scanner scanner = new Scanner(tweet.getText());
+            String nextHashtag = scanner.findInLine(myPattern);
+            while (nextHashtag != null) {
+                if (nextHashtag.charAt(1) == '#')
+                    nextHashtag = nextHashtag.substring(2).toLowerCase();
+                else
+                    nextHashtag = nextHashtag.substring(1).toLowerCase();
+                if (!usedHashtags.containsKey(nextHashtag))
+                    usedHashtags.put(nextHashtag, new HashSet<String>());
+                usedHashtags.get(nextHashtag).add(tweet.getAuthor().toLowerCase());
+                nextHashtag = scanner.findInLine(myPattern);
+            }
+            scanner.close();
+        }
+        return usedHashtags;
     }
 
     /* Copyright (c) 2007-2016 MIT 6.005 course staff, all rights reserved.
