@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
 
 /**
  * SocialNetwork provides methods that operate on a social network.
@@ -25,7 +26,15 @@ import java.util.Set;
  * private methods or classes if you like.
  */
 public class SocialNetwork {
-
+    
+    public static void main(String[] args) {
+        Instant d1 = Instant.parse("2016-02-17T10:00:00Z");
+        Tweet tweet5 = new Tweet(5, "alyssa", "@bbitdiddle", d1);
+        Tweet tweet6 = new Tweet(6, "alyssa", "@Bbitdiddle", d1);
+        Map<String, Set<String>> followsGraph = guessFollowsGraph(Arrays.asList(tweet5, tweet6));
+        for (String follow : followsGraph.get("alyssa"))
+            System.out.println(follow);
+    }
     /**
      * Guess who might follow whom, from evidence found in tweets.
      * 
@@ -42,14 +51,7 @@ public class SocialNetwork {
      *         either authors or @-mentions in the list of tweets.
      */
     
-    public static void main(String[] args) {
-        Instant d1 = Instant.parse("2016-02-17T10:00:00Z");
-        Tweet tweet5 = new Tweet(5, "alyssa", "@bbitdiddle", d1);
-        Tweet tweet6 = new Tweet(6, "alyssa", "@Bbitdiddle", d1);
-        Map<String, Set<String>> followsGraph = guessFollowsGraph(Arrays.asList(tweet5, tweet6));
-        for (String follow : followsGraph.get("alyssa"))
-            System.out.println(follow);
-    }
+    
     public static Map<String, Set<String>> guessFollowsGraph(List<Tweet> tweets) {
         Map<String, Set<String>> followsGraph = new HashMap<String, Set<String>>();
             for (Tweet tweet : tweets) {
@@ -78,7 +80,13 @@ public class SocialNetwork {
      *         descending order of follower count.
      */
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
-        throw new RuntimeException("not implemented");
+        List<String> authors = new ArrayList<String>();
+        List<Integer> followers = new ArrayList<Integer>();
+        for (String author : followsGraph.keySet()) {
+            authors.add(author);
+            followers.add(followsGraph.get(author).size());
+        }
+        return authors;
     }
 
     /* Copyright (c) 2007-2016 MIT 6.005 course staff, all rights reserved.
@@ -86,3 +94,4 @@ public class SocialNetwork {
      * Don't post any of this code on the web or to a public Github repository.
      */
 }
+ 
