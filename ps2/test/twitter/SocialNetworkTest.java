@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +22,9 @@ public class SocialNetworkTest {
      * Follows:can't follow self, not case sensitive
      * @mentions: if user @ mentions follow in map. Test across multiple tweets.
      * same user different cases. Multiple @ one tweet.(don't stop parse after self mention)
+     * 
+     * Partitions for influencers:
+     * Map: empty, one, three (ensure unique and in correct order)
      */
     
     
@@ -117,6 +121,39 @@ public class SocialNetworkTest {
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
         assertTrue("expected empty list", influencers.isEmpty());
+    }
+    
+    @Test
+    public void testInfluencersOne() {
+        Map<String, Set<String>> followsGraph = new HashMap<>();
+        Set<String> mySet = new HashSet<String>();
+        mySet.add("paul");
+        followsGraph.put("alyssa", mySet);
+        List<String> influencers = SocialNetwork.influencers(followsGraph);
+        
+        assertEquals("expected 1 person in list", 1, influencers.size());
+        assertTrue("Correct person in list", influencers.get(0).equals("alyssa"));
+    }
+    
+    @Test
+    public void testInfluencersThree() {
+        Map<String, Set<String>> followsGraph = new HashMap<>();
+        String[] authors = {"alyssa", "max", "thomas"};
+        ArrayList<HashSet<String>> follows = new ArrayList<HashSet<String>>();
+        for (int i = 0; i < 3; i++) { follows.add(new HashSet<String>()); }
+        follows.get(0).add("paul");
+        follows.get(1).add("mark");
+        follows.get(1).add("paul");
+        follows.get(2).add("paul");
+        follows.get(2).add("mark");
+        follows.get(2).add("luke");
+        for (int i = 0; i < 3; i++) {followsGraph.put(authors[i], follows.get(i));
+        List<String> influencers = SocialNetwork.influencers(followsGraph);
+        
+        assertEquals("expected 1 person in list", 3, influencers.size());
+        assertTrue("Correct person in list index 2", influencers.get(2).equals("alyssa"));
+        assertTrue("Correct person in list index 1", influencers.get(1).equals("max"));
+        assertTrue("Correct person in list index 0", influencers.get(0).equals("thomas"));
     }
 
     /*
