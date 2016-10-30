@@ -147,7 +147,7 @@ public class SocialNetworkTest {
         follows.get(2).add("paul");
         follows.get(2).add("mark");
         follows.get(2).add("luke");
-        for (int i = 0; i < 3; i++) {followsGraph.put(authors[i], follows.get(i));
+        for (int i = 0; i < 3; i++) { followsGraph.put(authors[i], follows.get(i)); }
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
         assertEquals("expected 1 person in list", 3, influencers.size());
