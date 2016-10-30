@@ -70,6 +70,7 @@ public class SocialNetwork {
             }
         return followsGraph;
     }
+    
 
     /**
      * Find the people in a social network who have the greatest influence, in
@@ -91,6 +92,8 @@ public class SocialNetwork {
         for (Author author : authors) { authorStrings.add(author.name); }
         return authorStrings;        
     }
+    
+    
     
     private static class Author implements Comparable<Author>{
         

@@ -102,7 +102,7 @@ public class Filter {
      *          a map that contains all hashtags (as defined above) seen in the tweets
      *          and the authors who wrote the tweets containing the hashtags
      */
-    public static Map<String, String> usedHashtag(List<Tweet> tweets) {
+    public static Map<String, List<String>> usedHashtag(List<Tweet> tweets) {
         throw new RuntimeException("not implemented");
     }
 
