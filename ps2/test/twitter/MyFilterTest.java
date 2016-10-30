@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
+import java.util.HashSet;
 import org.junit.Test;
 
 public class MyFilterTest {
@@ -43,7 +43,7 @@ public class MyFilterTest {
     public void testUsedHashtagNoHashtags() {
         Tweet[] tweets = {tweet1};
         
-        Map<String, List<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
+        Map<String, HashSet<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
        
         assertEquals("empty map", 0, hashtagAssociations.size()); //Ensure list immutable
     }
@@ -52,7 +52,7 @@ public class MyFilterTest {
     public void testUsedHashtagBeginning() {
         Tweet[] tweets = {tweetBegin};
         
-        Map<String, List<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
+        Map<String, HashSet<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
        
         assertEquals("hashtag in map", 1, hashtagAssociations.size()); //Ensure list immutable
         for (String hashtag : hashtagAssociations.keySet()) {
@@ -64,7 +64,7 @@ public class MyFilterTest {
     public void testUsedHashtagMultipleHashtags() {
         Tweet[] tweets = {tweet2, tweet3};
         
-        Map<String, List<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
+        Map<String, HashSet<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
        
         assertEquals("hashtags in map", 2, hashtagAssociations.size()); //Ensure list immutable
         for (String hashtag : hashtagAssociations.keySet()) {
@@ -77,7 +77,7 @@ public class MyFilterTest {
     public void testUsedHashtagEnd() {
         Tweet[] tweets = {tweetEnd};
         
-        Map<String, List<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
+        Map<String, HashSet<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
        
         assertEquals("hashtag in map", 1, hashtagAssociations.size()); //Ensure list immutable
         for (String hashtag : hashtagAssociations.keySet()) {
@@ -89,7 +89,7 @@ public class MyFilterTest {
     public void testUsedHashtagMultipleAuthorsSameHashtag() {
         Tweet[] tweets = {tweet2, tweetRepeat};
         
-        Map<String, List<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
+        Map<String, HashSet<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
        
         assertEquals("1 hashtag in map", 1, hashtagAssociations.size()); //Ensure list immutable
         for (String hashtag : hashtagAssociations.keySet())
@@ -101,11 +101,11 @@ public class MyFilterTest {
     public void testUsedHashtagCase() {
         Tweet[] tweets = {tweet2, tweetUpper};
         
-        Map<String, List<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
+        Map<String, HashSet<String>> hashtagAssociations = Filter.usedHashtag(Arrays.asList(tweets));
        
         assertEquals("1 hashtag in map", 1, hashtagAssociations.size()); //Ensure list immutable
         for (String hashtag : hashtagAssociations.keySet())
-            assertEquals("user in map", "bbitdiddle", hashtagAssociations.get(hashtag).get(0).toLowerCase());
+            assertEquals("user in map", "bbitdiddle", hashtagAssociations.get(hashtag).toArray()[0]);
     }
     
     @Test
