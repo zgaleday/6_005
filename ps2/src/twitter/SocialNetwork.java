@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -80,18 +81,39 @@ public class SocialNetwork {
      *         descending order of follower count.
      */
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
-        List<String> authors = new ArrayList<String>();
-        List<Integer> followers = new ArrayList<Integer>();
+        List<Author> authors = new ArrayList<Author>();
         for (String author : followsGraph.keySet()) {
-            authors.add(author);
-            followers.add(followsGraph.get(author).size());
+            Author myAuthor = new Author(author ,followsGraph.get(author).size());
+            authors.add(myAuthor);
         }
-        return authors;
+        Collections.sort(authors, Collections.reverseOrder());
+        List<String> authorStrings = new ArrayList<String>();
+        for (Author author : authors) { authorStrings.add(author.name); }
+        return authorStrings;        
     }
-
+    
+    private static class Author implements Comparable<Author>{
+        
+        private int followers;
+        private String name;
+        
+        public Author (String author, int followers) { 
+            this.name = author;
+            this.followers = followers; 
+       }
+                
+        public int compareTo(Author that) {
+            if (this.followers == that.followers) { return 0; }
+            else if (this.followers < that.followers) { return -1; }
+            else { return 1; }
+        }
+        
+    }
     /* Copyright (c) 2007-2016 MIT 6.005 course staff, all rights reserved.
      * Redistribution of original or derived work requires explicit permission.
      * Don't post any of this code on the web or to a public Github repository.
      */
 }
+
+
  
