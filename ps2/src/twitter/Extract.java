@@ -36,6 +36,7 @@ public class Extract {
             else if (start.compareTo(tweetInstant) > 0) { start = tweetInstant; }
             else if (end.compareTo(tweetInstant) < 0) { end = tweetInstant; }   
         }
+        if (start == null && end == null) { start = end = Instant.parse("2016-02-17T10:00:00Z"); }
         Timespan minInterval = new Timespan(start, end);
         return minInterval;
     }
