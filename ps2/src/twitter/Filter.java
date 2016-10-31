@@ -81,11 +81,11 @@ public class Filter {
      */
     public static List<Tweet> containing(List<Tweet> tweets, List<String> words) {
         List<Tweet> matches = new ArrayList<Tweet>();
-        
         for (Tweet tweet : tweets) {
             for (String word : words) {
                 if (tweet.getText().toLowerCase().contains(word.toLowerCase())) 
                     matches.add(tweet);
+                    break;
             }
         }
         
