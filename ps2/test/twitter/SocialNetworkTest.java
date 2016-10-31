@@ -151,7 +151,7 @@ public class SocialNetworkTest {
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
         assertEquals("expected 1 person in list", 3, influencers.size());
-        assertTrue("Correct person in list index 2", influencers.get(2).equals("alyssa"));
+        assertTrue("Expect alyssa got: " + influencers.get(2) , influencers.get(2).equals("alyssa"));
         assertTrue("Correct person in list index 1", influencers.get(1).equals("max"));
         assertTrue("Correct person in list index 0", influencers.get(0).equals("thomas"));
     }
