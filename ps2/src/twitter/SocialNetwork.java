@@ -84,7 +84,10 @@ public class SocialNetwork {
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
         List<Author> authors = new ArrayList<Author>();
         for (String author : followsGraph.keySet()) {
-            Author myAuthor = new Author(author ,followsGraph.get(author).size());
+            Set<String> tempFollowers = followsGraph.get(author);
+            Author myAuthor;
+            if (tempFollowers == null) { myAuthor = new Author(author , 0); }
+            else { myAuthor = new Author(author ,followsGraph.get(author).size()); }
             authors.add(myAuthor);
         }
         Collections.sort(authors, Collections.reverseOrder());
@@ -106,8 +109,7 @@ public class SocialNetwork {
        }
                 
         public int compareTo(Author that) {
-            if (this.followers == that.followers) { return 0; }
-            else if (this.followers < that.followers) { return -1; }
+            if (this.followers <= that.followers) { return -1; }
             else { return 1; }
         }
         
