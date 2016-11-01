@@ -36,6 +36,7 @@ public class FilterTest {
     private static final Tweet tweet3 = new Tweet(3, "alyssa", "this is my second tweet", d2);
     private static final Tweet tweetBefore = new Tweet(4, " bbitdiddle", " cool rivest talk in 30 minutes #hype", dBefore);
     private static final Tweet tweetAfter = new Tweet(5, "alyssa", "boot this is my second tweet", dAfter);
+    
 
     
     @Test(expected=AssertionError.class)

@@ -45,7 +45,8 @@ public class ExtractTest {
     private static final Tweet tweetUpperLower = new Tweet(7, "alyssa", "I like @abc and @AbC", d1);
     private static final Tweet tweetMultiple = new Tweet(8, "alyssa", "Man I feel @abc and @def", d1);
     private static final Tweet tweetParser = new Tweet(9, "alyssa", "cool@abc.com def @efc", d1);
-    private static final Tweet tweet7 = new Tweet(7, "Alyssa", "@bbitdiddle", d1);
+    private static final Tweet tweet7 = new Tweet(10, "Alyssa", "@bbitdiddle", d1);
+    private static final Tweet tweetPunctuation = new Tweet(11, "alyssa", "@boot. @hoot! @scoot? @loot,", d1);
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
@@ -135,6 +136,18 @@ public class ExtractTest {
         assertTrue("expected one user", mentionedUsers.size() == 1);        //Only one user
         for (String user : mentionedUsers) {
             assertEquals("expected user once", user.toLowerCase(), "abc");  //Set property
+        }
+    }
+    
+    @Test
+    public void testGetMentionedUsersPunctuation() {
+        Set<String> mentionedUsers = Extract.getMentionedUsers(Arrays.asList(tweetPunctuation));
+        
+        assertTrue("expected one user", mentionedUsers.size() == 4);        //Only one user
+        for (String user : mentionedUsers) {
+            assertTrue("expected user once", user.toLowerCase().equals("loot") ||
+                    user.toLowerCase().equals("scoot") || user.toLowerCase().equals("boot") ||
+                    user.toLowerCase().equals("hoot")); 
         }
     }
     
