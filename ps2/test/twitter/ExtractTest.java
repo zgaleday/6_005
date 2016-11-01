@@ -96,6 +96,13 @@ public class ExtractTest {
         assertTrue("start equals end", timespan.getStart().equals(timespan.getEnd()));
     }
     
+    @Test
+    public void testEmpty() {
+        Timespan timespan = Extract.getTimespan(Arrays.asList());
+        
+        //Test that Timespan start and stops at same Instant
+        assertTrue("start equals end", timespan.getStart().equals(timespan.getEnd()));
+    }
     
     @Test
     public void testGetTimespanTwoTweets() {
