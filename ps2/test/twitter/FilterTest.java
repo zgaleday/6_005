@@ -153,7 +153,7 @@ public class FilterTest {
         List<Tweet> containing = Filter.containing(Arrays.asList(tweet1, tweet2), Arrays.asList("30", "reasonable"));
         
         assertFalse("expected non-empty list", containing.isEmpty());
-        assertTrue("expected list to contain tweets", containing.containsAll(Arrays.asList(tweet1, tweet2)));
+        assertTrue("expected list to contain tweets" + containing, containing.containsAll(Arrays.asList(tweet1, tweet2)));
         assertEquals("expected same order", 0, containing.indexOf(tweet1));
     }
     
