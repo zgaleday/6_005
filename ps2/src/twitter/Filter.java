@@ -83,8 +83,8 @@ public class Filter {
         HashSet<Tweet> matches = new HashSet<Tweet>();
         for (Tweet tweet : tweets) {
             for (String word : words) {
-                if (tweet.getText().toLowerCase().contains(word.toLowerCase())) 
-                    matches.add(tweet);
+                for (String check : tweet.getText().toLowerCase().split(" ")) 
+                    if (check.equals(word.toLowerCase())) { matches.add(tweet); }
             }
         }
         
