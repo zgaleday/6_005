@@ -80,16 +80,15 @@ public class Filter {
      *         same order as in the input list.
      */
     public static List<Tweet> containing(List<Tweet> tweets, List<String> words) {
-        List<Tweet> matches = new ArrayList<Tweet>();
+        HashSet<Tweet> matches = new HashSet<Tweet>();
         for (Tweet tweet : tweets) {
             for (String word : words) {
                 if (tweet.getText().toLowerCase().contains(word.toLowerCase())) 
                     matches.add(tweet);
-                    break;
             }
         }
         
-        return matches;
+        return new ArrayList<Tweet>(matches);
     }
     
     /**
