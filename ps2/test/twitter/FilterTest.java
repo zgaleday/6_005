@@ -53,6 +53,13 @@ public class FilterTest {
     }
     
     @Test
+    public void testWrittenByMultipleEmptyTweets() {
+        List<Tweet> writtenBy = Filter.writtenBy(Arrays.asList(), "alyssa");
+        
+        assertEquals("expected empty list", 0, writtenBy.size());
+    }
+    
+    @Test
     public void testWrittenByAuthorFormat() {
         List<Tweet> writtenByLower = Filter.writtenBy(Arrays.asList(tweet1, tweet2), "alyssa");
         List<Tweet> writtenByUpper = Filter.writtenBy(Arrays.asList(tweet1, tweet2), "ALYSSA");
