@@ -157,6 +157,22 @@ public class FilterTest {
     }
     
     @Test
+    public void testContainingSubstring() {
+        List<Tweet> containing = Filter.containing(Arrays.asList(tweet1), Arrays.asList("talks"));
+        
+        assertTrue("expected empty list", containing.isEmpty());
+        
+    }
+    
+    @Test
+    public void testContainingSubstringReturn() {
+        List<Tweet> containing = Filter.containing(Arrays.asList(tweet1), Arrays.asList("rives"));
+        
+        assertTrue("expected empty list", containing.isEmpty());
+        
+    }
+    
+    @Test
     public void testContainingMultiWords() {
         List<Tweet> containing = Filter.containing(Arrays.asList(tweet1, tweet2), Arrays.asList("30", "reasonable"));
         
