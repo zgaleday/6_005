@@ -47,37 +47,35 @@ public class SocialNetworkTest {
         assert false; // make sure assertions are enabled with VM argument: -ea
     }
     
-    @Test
-    public void testGuessFollowsGraphNoInfo() {
-        Map<String, Set<String>> followsGraph = SocialNetwork.guessFollowsGraph(Arrays.asList(tweet3));
-        
-        if (followsGraph.containsKey("alyssa"))
-            assertEquals("author supposed to have no follows", 0, followsGraph.get("alyssa").size());
-        else
-            assertTrue("expected empty graph", followsGraph.isEmpty());
-    }
     
     @Test
     public void testGuessFollowsGraphFollowCase() {
         Map<String, Set<String>> followsGraph = SocialNetwork.guessFollowsGraph(Arrays.asList(tweet5, tweet6));
         
         assertTrue("expect non-empty Map", followsGraph.size() >= 1);
+        boolean check = false;
         for (String user : followsGraph.keySet()) {
-            if (user.toLowerCase().equals("alyssa"))
-                assertEquals("expected one follow", 1, followsGraph.get(user).size());
-            else { assertEquals("user not in map", 0, 1); }
+            if (user.toLowerCase().equals("alyssa") && check == true)
+                assertFalse("case sensitivity: ", check);
+            else if (user.toLowerCase().equals("alyssa") && check == false)
+                check = true;
         }
+        assertTrue("User in once: ", check);
     }
     
     @Test
     public void testGuessFollowsGraphMultipleAt() {
         Map<String, Set<String>> followsGraph = SocialNetwork.guessFollowsGraph(Arrays.asList(tweet8, tweet9));
         
-        for (String user : followsGraph.keySet())
-            if (user.toLowerCase().equals("alyssa"))
-                assertEquals("expected one follow", 3, followsGraph.get(user).size());
-            else
-                assertEquals("user not in map", 0, 1);
+        assertTrue("expect non-empty Map", followsGraph.size() >= 1);
+        boolean check = false;
+        for (String user : followsGraph.keySet()) {
+            if (user.toLowerCase().equals("alyssa") && check == true)
+                assertFalse("case sensitivity: ", check);
+            else if (user.toLowerCase().equals("alyssa") && check == false)
+                check = true;
+        }
+        assertTrue("User in once: ", check);
     }
     
     @Test
@@ -86,16 +84,7 @@ public class SocialNetworkTest {
         
         assertEquals("expected one follow", 1, followsGraph.size());
     }
-    
-    @Test
-    public void testGuessFollowsSelfAt() {
-        Map<String, Set<String>> followsGraph = SocialNetwork.guessFollowsGraph(Arrays.asList(tweet4));
-        
-        if (followsGraph.containsKey("alyssa")) {
-            assertEquals("author supposed to have no follows", 0, followsGraph.get("alyssa").size());
-        }else
-            assertTrue("expected empty graph", followsGraph.isEmpty());
-    }
+
     
     @Test
     public void testGuessFollowsNotMutateList() {
@@ -108,12 +97,6 @@ public class SocialNetworkTest {
         assertTrue("immutable", Arrays.equals(tweets, tweets2)); //Ensure list immutable
     }
     
-    @Test
-    public void testGuessFollowsGraphEmpty() {
-        Map<String, Set<String>> followsGraph = SocialNetwork.guessFollowsGraph(new ArrayList<>());
-        
-        assertTrue("expected empty graph", followsGraph.isEmpty());
-    }
     
     @Test
     public void testInfluencersEmpty() {
