@@ -136,6 +136,19 @@ public class SocialNetworkTest {
     }
     
     @Test
+    public void testInfluencersTwoUsersOneFollowing() {
+        Map<String, Set<String>> followsGraph = new HashMap<>();
+        Set<String> mySet = new HashSet<String>();
+        mySet.add("paul");
+        followsGraph.put("alyssa", mySet);
+        followsGraph.put("paul", new HashSet<String>());
+        List<String> influencers = SocialNetwork.influencers(followsGraph);
+        
+        assertEquals("expected 1 person in list", 2, influencers.size());
+        assertTrue("Correct person in list", influencers.get(0).equals("alyssa"));
+    }
+    
+    @Test
     public void testInfluencersThree() {
         Map<String, Set<String>> followsGraph = new HashMap<>();
         String[] authors = {"alyssa", "max", "thomas"};
