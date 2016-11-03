@@ -152,6 +152,21 @@ public class SocialNetworkTest {
         assertTrue("Correct person in list index 0", influencers.get(0).equals("thomas"));
     }
 
+    public void testInfluencersCase() {
+        Map<String, Set<String>> followsGraph = new HashMap<>();
+        String[] authors = {"alyssa", "Alyssa"};
+        ArrayList<HashSet<String>> follows = new ArrayList<HashSet<String>>();
+        for (int i = 0; i < 3; i++) { follows.add(new HashSet<String>()); }
+        follows.get(0).add("paul");
+        follows.get(1).add("mark");
+        follows.get(1).add("paul");
+        for (int i = 0; i < 2; i++) { followsGraph.put(authors[i], follows.get(i)); }
+        List<String> influencers = SocialNetwork.influencers(followsGraph);
+        
+        assertEquals("expected 1 person in list", 1, influencers.size());
+        assertTrue("Expect alyssa got: " + influencers.get(0) , influencers.get(0).toLowerCase().equals("alyssa"));
+    }
+    
     /*
      * Warning: all the tests you write here must be runnable against any
      * SocialNetwork class that follows the spec. It will be run against several
