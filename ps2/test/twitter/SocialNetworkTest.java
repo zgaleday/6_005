@@ -152,6 +152,7 @@ public class SocialNetworkTest {
         assertTrue("Correct person in list index 0", influencers.get(0).equals("thomas"));
     }
 
+    @Test
     public void testInfluencersCase() {
         Map<String, Set<String>> followsGraph = new HashMap<>();
         String[] authors = {"alyssa", "Alyssa"};
@@ -159,7 +160,7 @@ public class SocialNetworkTest {
         for (int i = 0; i < 3; i++) { follows.add(new HashSet<String>()); }
         follows.get(0).add("paul");
         follows.get(1).add("mark");
-        follows.get(1).add("paul");
+        follows.get(1).add("Paul");
         for (int i = 0; i < 2; i++) { followsGraph.put(authors[i], follows.get(i)); }
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
