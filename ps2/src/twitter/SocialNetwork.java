@@ -81,7 +81,7 @@ public class SocialNetwork {
      * @return a list of all distinct Twitter usernames in followsGraph, in
      *         descending order of follower count.
      */
-    public static List<String> influencers(Map<String, Set<String>> followsGraph) {
+    public static List<String> influencersOld(Map<String, Set<String>> followsGraph) {
         List<Author> authors = new ArrayList<Author>();
         for (String author : followsGraph.keySet()) {
             Set<String> tempFollowers = followsGraph.get(author);
@@ -96,22 +96,57 @@ public class SocialNetwork {
         return authorStrings;        
     }
     
+    public static List<String> influencers(Map<String, Set<String>> followsGraph) {
+        Map<String, Author> authors = new HashMap<String, Author>();
+        for (String author : followsGraph.keySet()) {
+            if (authors.containsKey(author.toLowerCase())) {
+                for (String follower : followsGraph.get(author)) {
+                    authors.get(author.toLowerCase()).addFollower(follower.toLowerCase());
+                }
+            }
+            else {
+                authors.put(author.toLowerCase(), new Author(author.toLowerCase(), 0));
+                for (String follower : followsGraph.get(author)) {
+                    authors.get(author.toLowerCase()).addFollower(follower.toLowerCase());
+                }
+            }
+        }
+        ArrayList<Author> authorsArray = new ArrayList<Author>();
+        for (Author a : authors.values()) { authorsArray.add(a); }
+        Collections.sort(authorsArray, Collections.reverseOrder());
+        List<String> authorStrings = new ArrayList<String>();
+        for (Author tempAuthor : authorsArray) {
+            authorStrings.add(tempAuthor.name); 
+            System.out.println(tempAuthor.followers);
+        }
+        return authorStrings;        
+    }
+    
     
     
     private static class Author implements Comparable<Author>{
         
         private int followers;
         private String name;
+        private Set<String> followList;
         
         public Author (String author, int followers) { 
             this.name = author;
             this.followers = followers; 
-       }
+            this.followList = new HashSet<String>();
+        }
+        
+        public void addFollower(String name) {
+            followList.add(name);
+            followers = followList.size();
+        }
                 
         public int compareTo(Author that) {
-            if (this.followers <= that.followers) { return -1; }
+            if (this.followers < that.followers) { return -1; }
+            else if (this.followers == that.followers) { return 0; }
             else { return 1; }
         }
+
         
     }
     /* Copyright (c) 2007-2016 MIT 6.005 course staff, all rights reserved.
