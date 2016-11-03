@@ -159,11 +159,12 @@ public class SocialNetworkTest {
         for (int i = 0; i < 3; i++) { follows.add(new HashSet<String>()); }
         follows.get(0).add("paul");
         follows.get(1).add("mark");
-        follows.get(1).add("Paul");
+        follows.get(1).add("paul");
         for (int i = 0; i < 2; i++) { followsGraph.put(authors[i], follows.get(i)); }
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
-        assertTrue("Expect alyssa got: " + influencers.get(0) , influencers.get(0).toLowerCase().equals("alyssa"));
+        assertTrue("Expect paul or mark got: " + influencers.get(0) , influencers.get(0).toLowerCase().equals("paul") ||
+                influencers.get(0).toLowerCase().equals("mark"));
     }
     
     /*
