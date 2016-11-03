@@ -115,7 +115,7 @@ public class SocialNetworkTest {
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
         assertEquals("expected 1 person in list", 1, influencers.size());
-        assertTrue("Correct person in list" + influencers.get(0), influencers.get(0).toLowerCase().equals("alyssa"));
+        assertTrue("Correct person in list" + influencers.get(0), influencers.get(0).toLowerCase().equals("paul"));
     }
     
     @Test
@@ -127,8 +127,8 @@ public class SocialNetworkTest {
         followsGraph.put("paul", new HashSet<String>());
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
-        assertEquals("expected 1 person in list", 2, influencers.size());
-        assertTrue("Correct person in list", influencers.get(0).toLowerCase().equals("alyssa"));
+        assertEquals("expected 1 person in list", 1, influencers.size());
+        assertTrue("Correct person in list", influencers.get(0).toLowerCase().equals("paul"));
     }
     
     @Test
@@ -146,9 +146,9 @@ public class SocialNetworkTest {
         for (int i = 0; i < 3; i++) { followsGraph.put(authors[i], follows.get(i)); }
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
-        assertTrue("Expect alyssa got: " + influencers.get(2) , influencers.get(2).toLowerCase().equals("alyssa"));
-        assertTrue("Correct person in list index 1", influencers.get(1).toLowerCase().equals("max"));
-        assertTrue("Correct person in list index 0", influencers.get(0).toLowerCase().equals("thomas"));
+        assertTrue("Expect alyssa got: " + influencers.get(2) , influencers.get(2).toLowerCase().equals("luke"));
+        assertTrue("Correct person in list index 1", influencers.get(1).toLowerCase().equals("mark"));
+        assertTrue("Correct person in list index 0", influencers.get(0).toLowerCase().equals("paul"));
     }
 
     @Test
