@@ -70,10 +70,14 @@ public class SocialNetworkTest {
         assertTrue("expect non-empty Map", followsGraph.size() >= 1);
         boolean check = false;
         for (String user : followsGraph.keySet()) {
-            if (user.toLowerCase().equals("alyssa") && check == true)
+            if (user.toLowerCase().equals("alyssa") && check == true) 
                 assertFalse("case sensitivity: ", check);
-            else if (user.toLowerCase().equals("alyssa") && check == false)
+            else if (user.toLowerCase().equals("alyssa") && check == false) {
                 check = true;
+                for (String follow : followsGraph.get(user)) {
+                    assertFalse("User not in keyset", follow.toLowerCase().equals("alyssa"));
+                }
+            }
         }
         assertTrue("User in once: ", check);
     }
@@ -81,9 +85,17 @@ public class SocialNetworkTest {
     @Test
     public void testGuessFollowsGraphAuthorCase() {
         Map<String, Set<String>> followsGraph = SocialNetwork.guessFollowsGraph(Arrays.asList(tweet5, tweet7));
-        
-        assertEquals("expected one follow", 1, followsGraph.size());
+        boolean check = false;
+        for (String user : followsGraph.keySet()) {
+            if (user.toLowerCase().equals("alyssa") && check == true) 
+                assertFalse("case sensitivity: ", check);
+            else if (user.toLowerCase().equals("alyssa") && check == false) {
+                check = true;
+                
+            }    
+        }
     }
+              
 
     
     @Test
