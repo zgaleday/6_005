@@ -83,27 +83,29 @@ public class SocialNetwork {
      */
     
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
-        Map<String, Author> authors = new HashMap<String, Author>();
-        for (String author : followsGraph.keySet()) {
-            if (authors.containsKey(author.toLowerCase())) {
-                for (String follower : followsGraph.get(author)) {
-                    authors.get(author.toLowerCase()).addFollower(follower.toLowerCase());
+        Map<String, Author> influencers = new HashMap<String, Author>();
+        for (String follower : followsGraph.keySet()) {
+            if (!influencers.containsKey(follower.toLowerCase()))
+                influencers.put(follower.toLowerCase(), new Author(follower, 0));
+            Set<String> follows = followsGraph.get(follower);
+            for (String followed : follows) {
+                if (influencers.containsKey(followed.toLowerCase())) {
+                    influencers.get(followed.toLowerCase()).addFollower(follower.toLowerCase());
+                    }
+            
+                else {
+                    influencers.put(followed.toLowerCase(), new Author(followed.toLowerCase(), 0));
+                    influencers.get(followed.toLowerCase()).addFollower(follower.toLowerCase());
+                    }
                 }
             }
-            else {
-                authors.put(author.toLowerCase(), new Author(author.toLowerCase(), 0));
-                for (String follower : followsGraph.get(author)) {
-                    authors.get(author.toLowerCase()).addFollower(follower.toLowerCase());
-                }
-            }
-        }
+        
         ArrayList<Author> authorsArray = new ArrayList<Author>();
-        for (Author a : authors.values()) { authorsArray.add(a); }
+        for (Author a : influencers.values()) { authorsArray.add(a); }
         Collections.sort(authorsArray, Collections.reverseOrder());
         List<String> authorStrings = new ArrayList<String>();
         for (Author tempAuthor : authorsArray) {
             authorStrings.add(tempAuthor.name); 
-            System.out.println(tempAuthor.followers);
         }
         return authorStrings;        
     }
