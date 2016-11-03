@@ -81,20 +81,6 @@ public class SocialNetwork {
      * @return a list of all distinct Twitter usernames in followsGraph, in
      *         descending order of follower count.
      */
-    public static List<String> influencersOld(Map<String, Set<String>> followsGraph) {
-        List<Author> authors = new ArrayList<Author>();
-        for (String author : followsGraph.keySet()) {
-            Set<String> tempFollowers = followsGraph.get(author);
-            Author myAuthor;
-            if (tempFollowers == null) { myAuthor = new Author(author , 0); }
-            else { myAuthor = new Author(author ,followsGraph.get(author).size()); }
-            authors.add(myAuthor);
-        }
-        Collections.sort(authors, Collections.reverseOrder());
-        List<String> authorStrings = new ArrayList<String>();
-        for (Author author : authors) { authorStrings.add(author.name); }
-        return authorStrings;        
-    }
     
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
         Map<String, Author> authors = new HashMap<String, Author>();
