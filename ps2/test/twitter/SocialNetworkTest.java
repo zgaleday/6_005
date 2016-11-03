@@ -114,7 +114,7 @@ public class SocialNetworkTest {
         followsGraph.put("alyssa", mySet);
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
-        assertEquals("expected 1 person in list", 1, influencers.size());
+        assertEquals("expected 1 person in list", 2, influencers.size());
         assertTrue("Correct person in list" + influencers.get(0), influencers.get(0).toLowerCase().equals("paul"));
     }
     
@@ -127,7 +127,7 @@ public class SocialNetworkTest {
         followsGraph.put("paul", new HashSet<String>());
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
-        assertEquals("expected 1 person in list", 1, influencers.size());
+        assertEquals("expected 2 person in list", 2, influencers.size());
         assertTrue("Correct person in list", influencers.get(0).toLowerCase().equals("paul"));
     }
     
@@ -146,6 +146,7 @@ public class SocialNetworkTest {
         for (int i = 0; i < 3; i++) { followsGraph.put(authors[i], follows.get(i)); }
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
+        assertEquals("expected 6 person in list", 6, influencers.size());
         assertTrue("Expect alyssa got: " + influencers.get(2) , influencers.get(2).toLowerCase().equals("luke"));
         assertTrue("Correct person in list index 1", influencers.get(1).toLowerCase().equals("mark"));
         assertTrue("Correct person in list index 0", influencers.get(0).toLowerCase().equals("paul"));
@@ -163,8 +164,11 @@ public class SocialNetworkTest {
         for (int i = 0; i < 2; i++) { followsGraph.put(authors[i], follows.get(i)); }
         List<String> influencers = SocialNetwork.influencers(followsGraph);
         
+        assertEquals("expected 3 person in list", 3, influencers.size());
         assertTrue("Expect paul or mark got: " + influencers.get(0) , influencers.get(0).toLowerCase().equals("paul") ||
                 influencers.get(0).toLowerCase().equals("mark"));
+        assertTrue("Expect paul or mark got: " + influencers.get(1) , influencers.get(1).toLowerCase().equals("paul") ||
+                influencers.get(1).toLowerCase().equals("mark"));
     }
     
     /*
