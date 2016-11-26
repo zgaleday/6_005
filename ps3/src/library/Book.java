@@ -10,11 +10,22 @@ import java.util.List;
  */
 public class Book {
 
-    // TODO: rep
+    private final List<String> authors;
+    private final String title;
+    private final int year;
     
-    // TODO: rep invariant
-    // TODO: abstraction function
-    // TODO: safety from rep exposure argument
+    
+    // Rep Invariant:
+    //  authors is a list of authors. (must be non-empty and each author must have at least one non-space character.
+    //  title is the case sensitive title of the book (must contain at least one non-space character)
+    //  year is the publication date of the book in CE (must be positive)
+    // Abstraction Function:
+    //  
+    // Safety from rep exposure:
+    //  All fields are private;
+    //  title and year are String and int types, so are guaranteed immutable;
+    //  authors is a mutable list so the constructor and getAuthors method will make
+    //  defensive copies to avoid sharing the rep's author object with clients. 
     
     /**
      * Make a Book.
