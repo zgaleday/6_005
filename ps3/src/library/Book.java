@@ -87,17 +87,21 @@ public class Book {
                 " Publication Date: " + this.year;
     }
 
-    // uncomment the following methods if you need to implement equals and hashCode,
-    // or delete them if you don't
-    // @Override
-    // public boolean equals(Object that) {
-    //     throw new RuntimeException("not implemented yet");
-    // }
-    // 
-    // @Override
-    // public int hashCode() {
-    //     throw new RuntimeException("not implemented yet");
-    // }
+    
+     @Override
+     public boolean equals(Object that) {
+         throw new RuntimeException("not implemented yet");
+     }
+     
+     @Override
+     public int hashCode() {
+         int hashcode = this.title.hashCode();
+         hashcode += this.year;
+         for (String author : this.authors) {
+             hashcode += author.hashCode();
+         }
+         return hashcode;
+     }
 
 
 
