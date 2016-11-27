@@ -67,7 +67,7 @@ public class Book {
      * @return the authors of this book
      */
     public List<String> getAuthors() {
-        throw new RuntimeException("not implemented yet");
+        return new ArrayList<String>(this.authors);
     }
 
     /**
