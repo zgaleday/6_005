@@ -97,6 +97,14 @@ public class BookTest {
         }
     }  
     
+    @Test
+    public void testHashCode() {
+        List<String> authors = new ArrayList<String>(Arrays.asList(goodAuthor));
+        Book book = new Book(goodTitle, authors, goodYear);
+        assertFalse("Hashcode not overriden", book.hashCode() == System.identityHashCode(book));
+    }  
+    
+    
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
         assert false; // make sure assertions are enabled with VM argument: -ea
