@@ -20,7 +20,8 @@ public class Book {
     //  title is the case sensitive title of the book (must contain at least one non-space character)
     //  year is the publication date of the book in CE (must be positive)
     // Abstraction Function:
-    //  
+    //  Represents a book of a given title, authors as they appear and given publication year.  Authors is order sensitive
+    //  and each author is case sensitive. The title is case sensitive and should appear as it does on the cover.
     // Safety from rep exposure:
     //  All fields are private;
     //  title and year are String and int types, so are guaranteed immutable;
