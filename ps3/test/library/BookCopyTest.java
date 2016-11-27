@@ -14,16 +14,40 @@ public class BookCopyTest {
      * Testing strategy
      * ==================
      * 
-     * TODO: your testing strategy for this ADT should go here.
-     * Make sure you have partitions.
+     * Constructor:  Ensure the initial condition is good.
+     * getBook:  Ensure that a Book object is returned. Ensure correct book is returned. 
+     * getCondition and setCondtion: ensure one reflects the other. 
      */
     
-    // TODO: put JUnit @Test methods here that you developed from your testing strategy
+    private final Book goodBook = new Book("This Test Is Just An Example", Arrays.asList("You Should", "Replace It", "With Your Own Tests"), 1990);
+    
     @Test
     public void testExampleTest() {
         Book book = new Book("This Test Is Just An Example", Arrays.asList("You Should", "Replace It", "With Your Own Tests"), 1990);
         BookCopy copy = new BookCopy(book);
-        assertEquals(book, copy.getBook());
+        assertEquals("Incorrect book stored in bookCopy",book, copy.getBook());
+    }
+    
+    @Test(expected=AssertionError.class)
+    public void testBookNotNull() {
+        Book book = null;
+        BookCopy copy = new BookCopy(book);
+    }
+    
+    @Test
+    public void testInitialCondition() {
+        Book book = new Book("This Test Is Just An Example", Arrays.asList("You Should", "Replace It", "With Your Own Tests"), 1990);
+        BookCopy copy = new BookCopy(book);
+        assertEquals("Initial condition not GOOD.",BookCopy.Condition.GOOD, copy.getCondition());
+    }
+    
+    @Test
+    public void testSetCondition() {
+        Book book = new Book("This Test Is Just An Example", Arrays.asList("You Should", "Replace It", "With Your Own Tests"), 1990);
+        BookCopy copy = new BookCopy(book);
+        assertEquals("Initial condition not GOOD",BookCopy.Condition.GOOD, copy.getCondition());
+        copy.setCondition(BookCopy.Condition.DAMAGED);
+        assertEquals("Condition doesn't match after setCondition",BookCopy.Condition.DAMAGED, copy.getCondition());
     }
     
     @Test(expected=AssertionError.class)
