@@ -33,11 +33,14 @@ public class SmallLibrary implements Library {
     public SmallLibrary() {
         this.inLibrary = new HashSet<BookCopy>();
         this.checkedOut = new HashSet<BookCopy>();
+        checkRep();
     }
     
     // assert the rep invariant
     private void checkRep() {
-        throw new RuntimeException("not implemented yet");
+        for (BookCopy copy: inLibrary) {
+            assert !(checkedOut.contains(copy));
+        }
     }
 
     @Override
