@@ -6,11 +6,16 @@ package library;
  */
 public class BookCopy {
 
-    // TODO: rep
+    private final Book book;
+    private final BookCopy.Condition condition = BookCopy.Condition.GOOD;
     
-    // TODO: rep invariant
-    // TODO: abstraction function
-    // TODO: safety from rep exposure argument
+    // Rep Invariant:
+    //  The initial condition must be GOOD. book is a good instance of Book
+    // Abstraction Function:
+    //  Book is the type of book of this copy. condition maps to the condition of this copy of the book
+    // Safety from Rep exposure. 
+    //  book is immutable and it's reference is final.  condition is private and therefore can only be accessed using getters and setters. 
+    //  get returns a copy of the current condition.
     
     public static enum Condition {
         GOOD, DAMAGED
