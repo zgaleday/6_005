@@ -74,7 +74,7 @@ public class Book {
      * @return the year that this book was published
      */
     public int getYear() {
-        throw new RuntimeException("not implemented yet");
+        return this.year;
     }
 
     /**
