@@ -45,7 +45,15 @@ public class Book {
     
     // assert the rep invariant
     private void checkRep() {
-        throw new RuntimeException("not implemented yet");
+        assert this.authors != null;
+        assert this.title != null;
+        assert this.year >= 0;
+        assert this.title.trim().length() > 0;
+        assert this.authors.size() > 0;
+        for (String author : this.authors) {
+            assert author.trim().length() > 0;
+        }
+        
     }
     
     /**
