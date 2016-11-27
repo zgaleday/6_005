@@ -72,14 +72,20 @@ public class SmallLibrary implements Library {
     
     @Override
     public Set<BookCopy> allCopies(Book book) {
-        Set<BookCopy> all = new HashSet<BookCopy>(inLibrary);
-        all.addAll(checkedOut);
+        Set<BookCopy> all = new HashSet<BookCopy>();
+        for (BookCopy copy : inLibrary) 
+            if (copy.getBook().equals(book)) { all.add(copy); }
+        for (BookCopy copy : checkedOut) 
+            if (copy.getBook().equals(book)) { all.add(copy); }
         return all;
     }
     
     @Override
     public Set<BookCopy> availableCopies(Book book) {
-        throw new RuntimeException("not implemented yet");
+        Set<BookCopy> all = new HashSet<BookCopy>();
+        for (BookCopy copy : checkedOut) 
+            if (copy.getBook().equals(book)) { all.add(copy); }
+        return all;
     }
 
     @Override
