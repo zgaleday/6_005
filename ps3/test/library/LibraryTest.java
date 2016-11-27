@@ -1,6 +1,6 @@
 package library;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,7 +67,7 @@ public class LibraryTest {
      * ==================
      * 
      * buy():
-     *  already a copy in library. copy in library but not available. no copy in library.
+     *  already a copy in library. no copy in library.
      * checkout():
      *  only one copy in library. multiple copies in library
      * checkin():
@@ -75,22 +75,79 @@ public class LibraryTest {
      * isAvailable():
      *  is available. is checkout out. not in library at all
      * allCopies():
-     *  one copy. multiple copies. copy available. copy not available.
+     *  one copy. multiple copies. copy available. copy not available. If mutate return does not alter behavior.
      * availableCopies():
-     *  one copy. multiple copies. copy available. copy not available.
+     *  one copy. multiple copies. copy available. copy not available. If mutate return does not alter behavior.
      * find():
      *  exact title match. exact author match. multiple matches. same title and authors, but diff date, newest first.
-     *  multiple copies of same book (only once in list).
+     *  multiple copies of same book (only once in list).  If mutate return does not alter behavior. 
      * lose():
      *  multiple copies. one copy. copy started as available. copy started as not available.
      */
     
-    // TODO: put JUnit @Test methods here that you developed from your testing strategy
+    private final Book normalBook = new Book("Normal Book", Arrays.asList("Normal Author"), 1992);
+    private final Book newerNormalBook = new Book("Normal Book", Arrays.asList("Normal Author"), 1995);
+    
     @Test
     public void testExampleTest() {
         Library library = makeLibrary();
         Book book = new Book("This Test Is Just An Example", Arrays.asList("You Should", "Replace It", "With Your Own Tests"), 1990);
         assertEquals(Collections.emptySet(), library.availableCopies(book));
+    }
+    
+    @Test
+    public void testCheckoutOne() {
+        Library library = makeLibrary();
+        library.buy(normalBook);
+        assertEquals("Number of avail copies not one.", 1, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not one.", 1, library.allCopies(normalBook).size());
+        for (BookCopy copy : library.availableCopies(normalBook)) { 
+            library.checkout(copy);
+            assertTrue("Copy shouldn't be available.", library.isAvailable(copy));
+        }
+        assertEquals("Number of avail copies not one.", 0, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not two.", 1, library.allCopies(normalBook).size());
+    }
+    
+    @Test
+    public void testCheckoutMultiple() {
+        Library library = makeLibrary();
+        library.buy(normalBook);
+        assertEquals("Number of avail copies not one.", 1, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not one.", 1, library.allCopies(normalBook).size());
+        for (BookCopy copy : library.availableCopies(normalBook)) { 
+            library.checkout(copy); 
+            assertTrue("Copy shouldn't be available.", library.isAvailable(copy));
+        }
+        library.buy(normalBook);
+        assertEquals("Number of avail copies not one.", 1, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not two.", 2, library.allCopies(normalBook).size());
+    }
+    
+    @Test
+    public void testCheckoutAll() {
+        Library library = makeLibrary();
+        library.buy(normalBook);
+        assertEquals("Number of avail copies not one.", 1, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not one.", 1, library.allCopies(normalBook).size());
+        library.buy(normalBook);
+        for (BookCopy copy : library.availableCopies(normalBook)) { 
+            library.checkout(copy); 
+            assertTrue("Copy shouldn't be available.", library.isAvailable(copy));
+        }
+        assertEquals("Number of avail copies not one.", 0, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not two.", 2, library.allCopies(normalBook).size());
+    }
+    
+    @Test
+    public void testBuy() {
+        Library library = makeLibrary();
+        library.buy(normalBook);
+        assertEquals("Number of avail copies not one.", 1, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not one.", 1, library.allCopies(normalBook).size());
+        library.buy(normalBook);
+        assertEquals("Number of avail copies not two.", 2, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not two.", 2, library.allCopies(normalBook).size());
     }
     
     
