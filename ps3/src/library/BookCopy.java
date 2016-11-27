@@ -32,7 +32,8 @@ public class BookCopy {
     
     // assert the rep invariant
     private void checkRep() {
-        throw new RuntimeException("not implemented yet");
+        assert this.book != null;
+        assert this.condition == BookCopy.Condition.GOOD;
     }
     
     /**
