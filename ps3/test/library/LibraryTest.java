@@ -66,8 +66,23 @@ public class LibraryTest {
      * Testing strategy
      * ==================
      * 
-     * TODO: your testing strategy for this ADT should go here.
-     * Make sure you have partitions.
+     * buy():
+     *  already a copy in library. copy in library but not available. no copy in library.
+     * checkout():
+     *  only one copy in library. multiple copies in library
+     * checkin():
+     *  only copy of book.  Multiple copies of book.
+     * isAvailable():
+     *  is available. is checkout out. not in library at all
+     * allCopies():
+     *  one copy. multiple copies. copy available. copy not available.
+     * availableCopies():
+     *  one copy. multiple copies. copy available. copy not available.
+     * find():
+     *  exact title match. exact author match. multiple matches. same title and authors, but diff date, newest first.
+     *  multiple copies of same book (only once in list).
+     * lose():
+     *  multiple copies. one copy. copy started as available. copy started as not available.
      */
     
     // TODO: put JUnit @Test methods here that you developed from your testing strategy
