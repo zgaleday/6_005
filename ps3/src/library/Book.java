@@ -90,7 +90,16 @@ public class Book {
     
      @Override
      public boolean equals(Object that) {
-         throw new RuntimeException("not implemented yet");
+         if (that == null) { return false; }
+         if (!(that instanceof Book)) { return false; }
+         Book thatBook = (Book) that;
+         if (!(this.title.equals(thatBook.getTitle()))) { return false; }
+         if (!(this.year == thatBook.getYear()) { return false; }
+         if (!(this.authors.size() == thatBook.getAuthors().size())) { return false; }
+         for (int i = 0; i < this.authors.size(); i++) {
+             if (!(this.authors.get(i).equals(thatBook.getAuthors().get(i)))) { return false; }
+         }
+         return true;
      }
      
      @Override
