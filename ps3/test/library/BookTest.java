@@ -14,9 +14,15 @@ public class BookTest {
      * Testing strategy
      * ==================
      * 
-     * TODO: your testing strategy for this ADT should go here.
-     * Make sure you have partitions.
-     */
+     * Ensure the rep invariant is maintained.
+     * Test constructor only allows new Books to be created that follow preconditions.
+     * 
+     * Ensure that getTitle returns correct title.
+     * Ensure that getYear returns the correct year.
+     * Ensure that the list of Authors is not mutated when passed to the object. Ensure that order is maintained.
+     * Ensure that mutating the list from getAuthors does not effect the rep. (no rep exposure)
+     * 
+    */
     
     // TODO: put JUnit @Test methods here that you developed from your testing strategy
     @Test
