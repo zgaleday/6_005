@@ -67,12 +67,14 @@ public class SmallLibrary implements Library {
     
     @Override
     public boolean isAvailable(BookCopy copy) {
-        throw new RuntimeException("not implemented yet");
+        return inLibrary.contains(copy);
     }
     
     @Override
     public Set<BookCopy> allCopies(Book book) {
-        throw new RuntimeException("not implemented yet");
+        Set<BookCopy> all = new HashSet<BookCopy>(inLibrary);
+        all.addAll(checkedOut);
+        return all;
     }
     
     @Override
