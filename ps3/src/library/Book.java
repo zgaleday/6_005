@@ -60,7 +60,7 @@ public class Book {
      * @return the title of this book
      */
     public String getTitle() {
-        throw new RuntimeException("not implemented yet");
+        return this.title;
     }
     
     /**
