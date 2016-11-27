@@ -45,7 +45,9 @@ public class SmallLibrary implements Library {
 
     @Override
     public BookCopy buy(Book book) {
-        throw new RuntimeException("not implemented yet");
+        BookCopy copy = new BookCopy(book);
+        inLibrary.add(copy);
+        return copy;
     }
     
     @Override
