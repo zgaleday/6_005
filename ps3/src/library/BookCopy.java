@@ -7,7 +7,7 @@ package library;
 public class BookCopy {
 
     private final Book book;
-    private final BookCopy.Condition condition = BookCopy.Condition.GOOD;
+    private BookCopy.Condition condition = BookCopy.Condition.GOOD;
     
     // Rep Invariant:
     //  The initial condition must be GOOD. book is a good instance of Book
@@ -40,14 +40,15 @@ public class BookCopy {
      * @return the Book of which this is a copy
      */
     public Book getBook() {
-        throw new RuntimeException("not implemented yet");
+        return this.book;
     }
     
     /**
      * @return the condition of this book copy
      */
     public Condition getCondition() {
-        throw new RuntimeException("not implemented yet");
+        if (this.condition == BookCopy.Condition.DAMAGED) { return BookCopy.Condition.DAMAGED; }
+        else { return BookCopy.Condition.GOOD; }
     }
 
     /**
@@ -55,7 +56,7 @@ public class BookCopy {
      * @param condition the latest condition of the book copy
      */
     public void setCondition(Condition condition) {
-        throw new RuntimeException("not implemented yet");
+        this.condition = condition;
     }
     
     /**
