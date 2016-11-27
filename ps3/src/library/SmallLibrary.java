@@ -47,6 +47,7 @@ public class SmallLibrary implements Library {
     public BookCopy buy(Book book) {
         BookCopy copy = new BookCopy(book);
         inLibrary.add(copy);
+        checkRep();
         return copy;
     }
     
@@ -54,11 +55,14 @@ public class SmallLibrary implements Library {
     public void checkout(BookCopy copy) {
         inLibrary.remove(copy);
         checkedOut.add(copy);
+        checkRep();
     }
     
     @Override
     public void checkin(BookCopy copy) {
-        throw new RuntimeException("not implemented yet");
+        checkedOut.remove(copy);
+        inLibrary.add(copy);
+        checkRep();
     }
     
     @Override
