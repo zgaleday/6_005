@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -95,6 +98,86 @@ public class LibraryTest {
         assertEquals(Collections.emptySet(), library.availableCopies(book));
     }
     
+    public void testLoseTwo() {
+        Library library = makeLibrary();
+        library.buy(normalBook);
+        library.buy(normalBook);
+        assertEquals("Number of avail copies not one.", 2, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not one.", 2, library.allCopies(normalBook).size());
+        BookCopy cache = new BookCopy(newerNormalBook);
+        for (BookCopy copy : library.availableCopies(normalBook)) { 
+            cache = copy;
+        }
+        library.lose(cache);
+        assertFalse("Copy should be gone after lose.", library.isAvailable(cache));
+        assertEquals("Number of avail copies not one.", 1, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not one.", 1, library.allCopies(normalBook).size());
+    }
+    
+    @Test
+    public void testLoseOneOut() {
+        Library library = makeLibrary();
+        library.buy(normalBook);
+        assertEquals("Number of avail copies not one.", 1, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not one.", 1, library.allCopies(normalBook).size());
+        for (BookCopy copy : library.availableCopies(normalBook)) { 
+            library.checkout(copy);
+            library.lose(copy);
+            assertFalse("Copy shouldn't be available.", library.isAvailable(copy));
+        }
+        assertEquals("Number of avail copies not one.", 0, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not two.", 0, library.allCopies(normalBook).size());
+    }
+    
+    @Test
+    public void testLoseOneIn() {
+        Library library = makeLibrary();
+        library.buy(normalBook);
+        assertEquals("Number of avail copies not one.", 1, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not one.", 1, library.allCopies(normalBook).size());
+        for (BookCopy copy : library.availableCopies(normalBook)) { 
+            library.lose(copy);
+            assertFalse("Copy shouldn't be available.", library.isAvailable(copy));
+        }
+        assertEquals("Number of avail copies not one.", 0, library.availableCopies(normalBook).size());
+        assertEquals("Number of total copies not two.", 0, library.allCopies(normalBook).size());
+    }
+    
+    public void testFindExactAuthorMatch() {
+        Library library = makeLibrary();
+        library.buy(normalBook);
+        List<Book> books = library.find(normalBook.getAuthors().get(0));
+        Set<Book> bookSet = new HashSet<Book>(books);
+        assertEquals("List from find violates set property", bookSet.size(), books.size());
+        assertTrue("Find must return a list containing" + normalBook.toString(), books.contains(normalBook));
+    }
+    
+    public void testFindMutateReturn() {
+        Library library = makeLibrary();
+        library.buy(normalBook);
+        List<Book> books1 = library.find(normalBook.getAuthors().get(0));
+        List<Book> books2 = library.find(normalBook.getAuthors().get(0));
+        books2.add(newerNormalBook);
+        assertEquals("List from Find should not be mutated", books1, library.find(normalBook.getAuthors().get(0)));
+    }
+    
+    public void testFindDifferentDates() {
+        Library library = makeLibrary();
+        library.buy(normalBook);
+        library.buy(normalBook);
+        library.buy(newerNormalBook);
+        List<Book> books = library.find(normalBook.getTitle());
+        Set<Book> bookSet = new HashSet<Book>(books);
+        assertEquals("List from find violates set property", bookSet.size(), books.size());
+        assertTrue("Find must return a list containing" + normalBook.toString(), books.contains(normalBook));
+        assertTrue("Find must return a list containing" + newerNormalBook.toString(), books.contains(newerNormalBook));
+        int indexNewer = books.size();
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).equals(newerNormalBook)) { indexNewer = i; }
+            else if (books.get(i).equals(normalBook)) { assertTrue("Newer books should come first", indexNewer < i); }
+        }
+    }
+    
     @Test
     public void testAllCopiesMutate() {
         Library library = makeLibrary();
@@ -106,7 +189,6 @@ public class LibraryTest {
         assertEquals("Number of avail copies not 1.", 1, library.availableCopies(normalBook).size());
         assertEquals("Number of total copies not 1.", 1, library.allCopies(normalBook).size());
     }
-    
     
     @Test
     public void testIsAvailableNotInLibrary() {
