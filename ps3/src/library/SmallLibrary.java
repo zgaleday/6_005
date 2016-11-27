@@ -95,7 +95,8 @@ public class SmallLibrary implements Library {
     
     @Override
     public void lose(BookCopy copy) {
-        throw new RuntimeException("not implemented yet");
+        inLibrary.remove(copy);
+        checkedOut.remove(copy);
     }
 
     // uncomment the following methods if you need to implement equals and hashCode,
