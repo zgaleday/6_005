@@ -2,6 +2,8 @@ package library;
 
 import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.ArrayList;
 
 /** 
  * SmallLibrary represents a small collection of books, like a single person's home collection.
@@ -26,10 +28,11 @@ public class SmallLibrary implements Library {
     //      where if a book copy is in inLibrary then it is available,
     //      and if a copy is in checkedOut then it is checked out
 
-    // TODO: safety from rep exposure argument
+    // Return a copy of inLibrary and checkedOut and fields private.
     
     public SmallLibrary() {
-        throw new RuntimeException("not implemented yet");
+        this.inLibrary = new HashSet<BookCopy>();
+        this.checkedOut = new HashSet<BookCopy>();
     }
     
     // assert the rep invariant
