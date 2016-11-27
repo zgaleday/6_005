@@ -2,6 +2,7 @@ package library;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Book is an immutable type representing an edition of a book -- not the physical object, 
@@ -82,7 +83,8 @@ public class Book {
      *    authors, and publication year
      */
     public String toString() {
-        throw new RuntimeException("not implemented yet");
+        return "Title: " + this.title + " Authors: " + Arrays.toString(this.authors.toArray()) + 
+                " Publication Date: " + this.year;
     }
 
     // uncomment the following methods if you need to implement equals and hashCode,
