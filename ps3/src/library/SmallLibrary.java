@@ -83,7 +83,7 @@ public class SmallLibrary implements Library {
     @Override
     public Set<BookCopy> availableCopies(Book book) {
         Set<BookCopy> all = new HashSet<BookCopy>();
-        for (BookCopy copy : checkedOut) 
+        for (BookCopy copy : inLibrary) 
             if (copy.getBook().equals(book)) { all.add(copy); }
         return all;
     }
