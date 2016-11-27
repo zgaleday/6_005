@@ -26,7 +26,8 @@ public class BookCopy {
      * @param book the Book of which this is a copy
      */
     public BookCopy(Book book) {
-        throw new RuntimeException("not implemented yet");
+        this.book = book;
+        checkRep();
     }
     
     // assert the rep invariant
