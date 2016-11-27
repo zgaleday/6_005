@@ -64,21 +64,12 @@ public class BookCopy {
      *    and the words "good" or "damaged" depending on its condition
      */
     public String toString() {
-        throw new RuntimeException("not implemented yet");
+        if (this.condition == BookCopy.Condition.GOOD) 
+            return "This copy of " + this.book.toString() + " is in good condition.";
+        else { return "This copy of " + this.book.toString() + " is damaged."; }
     }
 
-    // uncomment the following methods if you need to implement equals and hashCode,
-    // or delete them if you don't
-    // @Override
-    // public boolean equals(Object that) {
-    //     throw new RuntimeException("not implemented yet");
-    // }
-    // 
-    // @Override
-    // public int hashCode() {
-    //     throw new RuntimeException("not implemented yet");
-    // }
-
+    
 
     /* Copyright (c) 2016 MIT 6.005 course staff, all rights reserved.
      * Redistribution of original or derived work requires explicit permission.
