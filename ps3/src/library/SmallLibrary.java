@@ -110,8 +110,8 @@ public class SmallLibrary implements Library {
     private static class BookComparator implements Comparator<Book> {
         @Override
         public int compare(Book a, Book b) {
-            if (a.getYear() > b.getYear()) { return 1; }
-            else if (a.getYear() < b.getYear()) { return -1; }
+            if (a.getYear() < b.getYear()) { return 1; }
+            else if (a.getYear() > b.getYear()) { return -1; }
             else { return 0; }
         }
     }
