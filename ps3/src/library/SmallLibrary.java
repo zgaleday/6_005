@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 /** 
  * SmallLibrary represents a small collection of books, like a single person's home collection.
@@ -90,7 +92,28 @@ public class SmallLibrary implements Library {
 
     @Override
     public List<Book> find(String query) {
-        throw new RuntimeException("not implemented yet");
+        Set<Book> bookSet = new TreeSet<Book>(new BookComparator());
+        for (BookCopy copy: inLibrary) {
+            Book tempBook = copy.getBook();
+            if (tempBook.getTitle().equals(query)) { bookSet.add(tempBook); }
+            else if (tempBook.getAuthors().contains(query)) { bookSet.add(tempBook); }
+        }
+        for (BookCopy copy: checkedOut) {
+            Book tempBook = copy.getBook();
+            if (tempBook.getTitle().equals(query)) { bookSet.add(tempBook); }
+            else if (tempBook.getAuthors().contains(query)) { bookSet.add(tempBook); }
+        }
+        return new ArrayList<Book>(bookSet);
+        
+    }
+    
+    private static class BookComparator implements Comparator<Book> {
+        @Override
+        public int compare(Book a, Book b) {
+            if (a.getYear() > b.getYear()) { return 1; }
+            else if (a.getYear() < b.getYear()) { return -1; }
+            else { return 0; }
+        }
     }
     
     @Override
