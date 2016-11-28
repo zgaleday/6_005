@@ -143,6 +143,7 @@ public class LibraryTest {
         assertEquals("Number of total copies not two.", 0, library.allCopies(normalBook).size());
     }
     
+    @Test
     public void testFindExactAuthorMatch() {
         Library library = makeLibrary();
         library.buy(normalBook);
@@ -152,6 +153,7 @@ public class LibraryTest {
         assertTrue("Find must return a list containing" + normalBook.toString(), books.contains(normalBook));
     }
     
+    @Test
     public void testFindMutateReturn() {
         Library library = makeLibrary();
         library.buy(normalBook);
@@ -161,6 +163,7 @@ public class LibraryTest {
         assertEquals("List from Find should not be mutated", books1, library.find(normalBook.getAuthors().get(0)));
     }
     
+    @Test
     public void testFindDifferentDates() {
         Library library = makeLibrary();
         library.buy(normalBook);
