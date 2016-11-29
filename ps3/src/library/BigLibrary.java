@@ -31,7 +31,10 @@ public class BigLibrary implements Library {
     // TODO: safety from rep exposure argument
     
     public BigLibrary() {
-        throw new RuntimeException("not implemented yet");
+        this.allBooks = new TreeMap<Book, List<BookCopy>>();
+        this.inLibrary = new HashSet<BookCopy>();
+        this.checkedOut = new HashSet<BookCopy>();
+        checkRep();
     }
     
     // assert the rep invariant
