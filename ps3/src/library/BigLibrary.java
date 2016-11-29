@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * BigLibrary represents a large collection of books that might be held by a city or
@@ -48,7 +50,11 @@ public class BigLibrary implements Library {
 
     @Override
     public BookCopy buy(Book book) {
-        throw new RuntimeException("not implemented yet");
+        BookCopy newCopy = new BookCopy(book);
+        if (allBooks.containsKey(book)) { allBooks.get(book).add(newCopy); }
+        else { allBooks.put(book, new ArrayList<BookCopy>(Arrays.asList(newCopy))); }
+        inLibrary.add(newCopy);
+        return newCopy;
     }
     
     @Override
