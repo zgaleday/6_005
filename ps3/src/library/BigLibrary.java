@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class BigLibrary implements Library {
 
     // rep:
-    private final Map<Book, List<BookCopy>> allBooks;
+    private final Map<Book, Set<BookCopy>> allBooks;
     private final Set<BookCopy> inLibrary;
     private final Set<BookCopy> checkedOut;
     
@@ -33,7 +33,7 @@ public class BigLibrary implements Library {
     // TODO: safety from rep exposure argument
     
     public BigLibrary() {
-        this.allBooks = new TreeMap<Book, List<BookCopy>>();
+        this.allBooks = new TreeMap<Book, Set<BookCopy>>();
         this.inLibrary = new HashSet<BookCopy>();
         this.checkedOut = new HashSet<BookCopy>();
         checkRep();
@@ -52,7 +52,7 @@ public class BigLibrary implements Library {
     public BookCopy buy(Book book) {
         BookCopy newCopy = new BookCopy(book);
         if (allBooks.containsKey(book)) { allBooks.get(book).add(newCopy); }
-        else { allBooks.put(book, new ArrayList<BookCopy>(Arrays.asList(newCopy))); }
+        else { allBooks.put(book, new HashSet<BookCopy>(Arrays.asList(newCopy))); }
         inLibrary.add(newCopy);
         checkRep();
         return newCopy;
@@ -74,12 +74,15 @@ public class BigLibrary implements Library {
     
     @Override
     public Set<BookCopy> allCopies(Book book) {
-        throw new RuntimeException("not implemented yet");
+        return new HashSet<BookCopy>(allBooks.get(book));
     }
 
     @Override
     public Set<BookCopy> availableCopies(Book book) {
-        throw new RuntimeException("not implemented yet");
+        Set<BookCopy> copies = new HashSet<BookCopy>();
+        for (BookCopy copy : allBooks.get(book)) 
+            if (inLibrary.contains(copy)) { copies.add(copy); }
+        return copies;
     }
     
     @Override
