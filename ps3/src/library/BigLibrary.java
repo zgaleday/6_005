@@ -67,7 +67,9 @@ public class BigLibrary implements Library {
     
     @Override
     public void checkin(BookCopy copy) {
-        throw new RuntimeException("not implemented yet");
+        checkedOut.remove(copy);
+        inLibrary.add(copy);
+        checkRep();
     }
     
     @Override
