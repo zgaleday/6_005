@@ -39,7 +39,11 @@ public class BigLibrary implements Library {
     
     // assert the rep invariant
     private void checkRep() {
-        throw new RuntimeException("not implemented yet");
+        for (BookCopy copy: inLibrary) {
+            assert !(checkedOut.contains(copy));
+            assert (allBooks.containsKey(copy.getBook()));
+        }
+        for (BookCopy copy : checkedOut) { assert allBooks.containsKey(copy.getBook()); }
     }
 
     @Override
