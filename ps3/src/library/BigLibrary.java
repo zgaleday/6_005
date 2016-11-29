@@ -2,6 +2,9 @@ package library;
 
 import java.util.List;
 import java.util.Set;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.TreeMap;
 
 /**
  * BigLibrary represents a large collection of books that might be held by a city or
@@ -12,10 +15,19 @@ import java.util.Set;
  */
 public class BigLibrary implements Library {
 
-    // TODO: rep
+    // rep:
+    private final Map<Book, List<BookCopy>> allBooks;
+    private final Set<BookCopy> inLibrary;
+    private final Set<BookCopy> checkedOut;
     
-    // TODO: rep invariant
-    // TODO: abstraction function
+    // rep invariant:
+    //    the intersection of inLibrary and checkedOut is the empty set.
+    //    allBooks map each book in the library to each copy in the library
+    // abstraction function:
+    //      represents the collection of books is allAvailable, all available is 
+    //      where if a book copy is in inLibrary then it is available,
+    //      and if a copy is in checkedOut then it is checked out
+
     // TODO: safety from rep exposure argument
     
     public BigLibrary() {
