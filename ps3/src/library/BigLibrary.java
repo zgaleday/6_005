@@ -78,7 +78,9 @@ public class BigLibrary implements Library {
     
     @Override
     public Set<BookCopy> allCopies(Book book) {
-        return new HashSet<BookCopy>(allBooks.get(book));
+        if (allBooks.containsKey(book))
+            return new HashSet<BookCopy>(allBooks.get(book));
+        else { return Collections.emptySet(); }
     }
 
     @Override
