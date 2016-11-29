@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * BigLibrary represents a large collection of books that might be held by a city or
@@ -33,7 +35,7 @@ public class BigLibrary implements Library {
     // TODO: safety from rep exposure argument
     
     public BigLibrary() {
-        this.allBooks = new TreeMap<Book, Set<BookCopy>>();
+        this.allBooks = new TreeMap<Book, Set<BookCopy>>(new BookComparator());
         this.inLibrary = new HashSet<BookCopy>();
         this.checkedOut = new HashSet<BookCopy>();
         checkRep();
@@ -52,7 +54,9 @@ public class BigLibrary implements Library {
     public BookCopy buy(Book book) {
         BookCopy newCopy = new BookCopy(book);
         if (allBooks.containsKey(book)) { allBooks.get(book).add(newCopy); }
-        else { allBooks.put(book, new HashSet<BookCopy>(Arrays.asList(newCopy))); }
+        else { 
+            Set<BookCopy> tempSet = new HashSet<BookCopy>(Arrays.asList(newCopy));
+            allBooks.put(book, tempSet); }
         inLibrary.add(newCopy);
         checkRep();
         return newCopy;
@@ -80,14 +84,16 @@ public class BigLibrary implements Library {
     @Override
     public Set<BookCopy> availableCopies(Book book) {
         Set<BookCopy> copies = new HashSet<BookCopy>();
+        if (!allBooks.containsKey(book)) { return Collections.emptySet(); }
         for (BookCopy copy : allBooks.get(book)) 
             if (inLibrary.contains(copy)) { copies.add(copy); }
         return copies;
+        
     }
     
     @Override
     public boolean isAvailable(BookCopy copy) {
-        throw new RuntimeException("not implemented yet");
+        return inLibrary.contains(copy);
     }
     
     @Override
@@ -98,6 +104,15 @@ public class BigLibrary implements Library {
     @Override
     public void lose(BookCopy copy) {
         throw new RuntimeException("not implemented yet");
+    }
+    
+    private static class BookComparator implements Comparator<Book> {
+        @Override
+        public int compare(Book a, Book b) {
+            if (a.getYear() < b.getYear()) { return 1; }
+            else if (a.getYear() > b.getYear()) { return -1; }
+            else { return 0; }
+        }
     }
 
     // uncomment the following methods if you need to implement equals and hashCode,
