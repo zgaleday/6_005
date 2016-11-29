@@ -54,12 +54,15 @@ public class BigLibrary implements Library {
         if (allBooks.containsKey(book)) { allBooks.get(book).add(newCopy); }
         else { allBooks.put(book, new ArrayList<BookCopy>(Arrays.asList(newCopy))); }
         inLibrary.add(newCopy);
+        checkRep();
         return newCopy;
     }
     
     @Override
     public void checkout(BookCopy copy) {
-        throw new RuntimeException("not implemented yet");
+        inLibrary.remove(copy);
+        checkedOut.add(copy);
+        checkRep();
     }
     
     @Override
