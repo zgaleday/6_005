@@ -103,7 +103,12 @@ public class BigLibrary implements Library {
     
     @Override
     public void lose(BookCopy copy) {
-        throw new RuntimeException("not implemented yet");
+        Book book = copy.getBook();
+        allBooks.get(book).remove(copy);
+        if (allBooks.get(book).size() == 0) { allBooks.remove(book); }
+        inLibrary.remove(copy);
+        checkedOut.remove(copy);
+        checkRep();
     }
     
     private static class BookComparator implements Comparator<Book> {
