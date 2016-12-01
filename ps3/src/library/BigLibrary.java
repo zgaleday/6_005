@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,7 +39,7 @@ public class BigLibrary implements Library {
     // TODO: safety from rep exposure argument
     
     public BigLibrary() {
-        this.allBooks = new TreeMap<Book, Set<BookCopy>>(new BookComparator());
+        this.allBooks = new HashMap<Book, Set<BookCopy>>();
         this.inLibrary = new HashSet<BookCopy>();
         this.checkedOut = new HashSet<BookCopy>();
         this.lenMatch = new HashMap<Book, Integer>();
@@ -106,9 +107,16 @@ public class BigLibrary implements Library {
     @Override
     public List<Book> find(String query) {
         if (!query.equals(this.lastkeyword)) { this.lenMatch = new HashMap<Book, Integer>(); }
-        
-        
+        Set<Book> findResult = new TreeSet<Book>(new BookComparator(query));
+        for (Book book : this.allBooks.keySet()) {
+            String aMatcher = book.getTitle() + " ";
+            for (String author : book.getAuthors()) { aMatcher += author; }
+            int bookMatch = longestSubstr(query, aMatcher);
+            lenMatch.put(book, bookMatch);
+            if (bookMatch > (query.length() - 3)) { findResult.add(book); }
+        }
         this.lastkeyword = query;
+        return new ArrayList<Book>(findResult);
     }
     
     @Override
