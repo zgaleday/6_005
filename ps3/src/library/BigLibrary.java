@@ -107,11 +107,12 @@ public class BigLibrary implements Library {
     @Override
     public List<Book> find(String query) {
         if (!query.equals(this.lastkeyword)) { this.lenMatch = new HashMap<Book, Integer>(); }
+        query = query.toLowerCase();
         Set<Book> findResult = new TreeSet<Book>(new BookComparator(query));
         for (Book book : this.allBooks.keySet()) {
             String aMatcher = book.getTitle() + " ";
             for (String author : book.getAuthors()) { aMatcher += author; }
-            int bookMatch = longestSubstr(query, aMatcher);
+            int bookMatch = longestSubstr(query, aMatcher.toLowerCase());
             lenMatch.put(book, bookMatch);
             if (bookMatch > (query.length() - 3)) { findResult.add(book); }
         }
