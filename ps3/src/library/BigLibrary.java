@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  * BigLibrary represents a large collection of books that might be held by a city or
@@ -23,6 +24,8 @@ public class BigLibrary implements Library {
     private final Map<Book, Set<BookCopy>> allBooks;
     private final Set<BookCopy> inLibrary;
     private final Set<BookCopy> checkedOut;
+    private Map<Book, Integer> lenMatch;
+    private String lastkeyword;
     
     // rep invariant:
     //    the intersection of inLibrary and checkedOut is the empty set.
@@ -38,6 +41,7 @@ public class BigLibrary implements Library {
         this.allBooks = new TreeMap<Book, Set<BookCopy>>(new BookComparator());
         this.inLibrary = new HashSet<BookCopy>();
         this.checkedOut = new HashSet<BookCopy>();
+        this.lenMatch = new HashMap<Book, Integer>();
         checkRep();
     }
     
@@ -56,7 +60,8 @@ public class BigLibrary implements Library {
         if (allBooks.containsKey(book)) { allBooks.get(book).add(newCopy); }
         else { 
             Set<BookCopy> tempSet = new HashSet<BookCopy>(Arrays.asList(newCopy));
-            allBooks.put(book, tempSet); }
+            allBooks.put(book, tempSet);
+        }
         inLibrary.add(newCopy);
         checkRep();
         return newCopy;
@@ -100,7 +105,10 @@ public class BigLibrary implements Library {
     
     @Override
     public List<Book> find(String query) {
-        throw new RuntimeException("not implemented yet");
+        if (!query.equals(this.lastkeyword)) { this.lenMatch = new HashMap<Book, Integer>(); }
+        
+        
+        this.lastkeyword = query;
     }
     
     @Override
@@ -113,12 +121,62 @@ public class BigLibrary implements Library {
         checkRep();
     }
     
-    private static class BookComparator implements Comparator<Book> {
+    //Code used from http://stackoverflow.com/questions/17150311/
+    //java-implementation-for-longest-common-substring-of-n-strings this is a lazy implementation w/o Tries
+    //but assuming short strings should have less overhead.
+    private static int longestSubstr(String first, String second) {
+        if (first == null || second == null || first.length() == 0 || second.length() == 0) {
+            return 0;
+        }
+
+        int maxLen = 0;
+        int fl = first.length();
+        int sl = second.length();
+        int[][] table = new int[fl][sl];
+
+        for (int i = 0; i < fl; i++) {
+            for (int j = 0; j < sl; j++) {
+                if (first.charAt(i) == second.charAt(j)) {
+                    if (i == 0 || j == 0) {
+                        table[i][j] = 1;
+                    }
+                    else {
+                        table[i][j] = table[i - 1][j - 1] + 1;
+                    }
+                    if (table[i][j] > maxLen) {
+                        maxLen = table[i][j];
+                    }
+                }
+            }
+        }
+        return maxLen;
+    }
+    
+    private class BookComparator implements Comparator<Book> {
+        private String keyword;
+        public BookComparator() { super(); }
+        public BookComparator(String keyword) { this.keyword = keyword; }
         @Override
         public int compare(Book a, Book b) {
-            if (a.getYear() < b.getYear()) { return 1; }
-            else if (a.getYear() > b.getYear()) { return -1; }
-            else { return 0; }
+            if (!lenMatch.containsKey(a)) { 
+                String aMatcher = a.getTitle() + " ";
+                for (String author : a.getAuthors()) { aMatcher += author; }
+                lenMatch.put(a, longestSubstr(this.keyword, aMatcher));
+            }
+            if (!lenMatch.containsKey(b)) {
+                String bMatcher = b.getTitle() + " ";
+                for (String author : b.getAuthors()) { bMatcher += author; }
+                lenMatch.put(b, longestSubstr(this.keyword, bMatcher));
+            }
+            int alen = lenMatch.get(a);
+            int blen = lenMatch.get(b);            
+            if (alen > blen) { return 1; }
+            else if (blen < alen) { return -1; }
+            else { 
+                if (a.getYear() < b.getYear()) { return 1; }
+                else if (a.getYear() > b.getYear()) { return -1; }
+                else { return 0; }
+            }
         }
     }
 
