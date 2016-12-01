@@ -161,10 +161,16 @@ public class BigLibrary implements Library {
         return maxLen;
     }
     
+    /*
+     * Comparator class that uses the longestSubstr Map to sort books.  The longest substring
+     * match get the highest priority.  Meant to be used in a case insensitive manner with matches 
+     * of same length giving precedence to newer books. All else being equal the list will be sorted
+     * in alphabetical order. 
+     */
     private class BookComparator implements Comparator<Book> {
         private String keyword;
-        public BookComparator() { super(); }
         public BookComparator(String keyword) { this.keyword = keyword; }
+        
         @Override
         public int compare(Book a, Book b) {
             if (!lenMatch.containsKey(a)) { 
@@ -184,7 +190,7 @@ public class BigLibrary implements Library {
             else { 
                 if (a.getYear() < b.getYear()) { return 1; }
                 else if (a.getYear() > b.getYear()) { return -1; }
-                else { return a.getTitle().compareTo(b.getTitle()); }
+                else { return - a.getTitle().compareTo(b.getTitle()); }
             }
         }
     }
