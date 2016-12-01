@@ -30,13 +30,17 @@ public class BigLibrary implements Library {
     
     // rep invariant:
     //    the intersection of inLibrary and checkedOut is the empty set.
-    //    allBooks map each book in the library to each copy in the library
+    //    allBooks map each book in the library to each copy in the library.
+    //    len match is the substring match of each book stores to the last keyword.
     // abstraction function:
     //      represents the collection of books is allAvailable, all available is 
     //      where if a book copy is in inLibrary then it is available,
     //      and if a copy is in checkedOut then it is checked out
 
-    // TODO: safety from rep exposure argument
+    // safety from rep exposure:
+    //  all mutable objects returned to user are defensively copies. All fields are private and
+    //  final where possible.  lenMatch and lastKeyword are new exposed to the user.
+    // 
     
     public BigLibrary() {
         this.allBooks = new HashMap<Book, Set<BookCopy>>();
@@ -106,8 +110,8 @@ public class BigLibrary implements Library {
     
     @Override
     public List<Book> find(String query) {
-        if (!query.equals(this.lastkeyword)) { this.lenMatch = new HashMap<Book, Integer>(); }
         query = query.toLowerCase();
+        if (!query.equals(this.lastkeyword)) { this.lenMatch = new HashMap<Book, Integer>(); }
         Set<Book> findResult = new TreeSet<Book>(new BookComparator(query));
         for (Book book : this.allBooks.keySet()) {
             String aMatcher = book.getTitle() + " ";
