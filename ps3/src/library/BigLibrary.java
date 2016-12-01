@@ -175,7 +175,7 @@ public class BigLibrary implements Library {
             else { 
                 if (a.getYear() < b.getYear()) { return 1; }
                 else if (a.getYear() > b.getYear()) { return -1; }
-                else { return 0; }
+                else { return a.getTitle().compareTo(b.getTitle()); }
             }
         }
     }
