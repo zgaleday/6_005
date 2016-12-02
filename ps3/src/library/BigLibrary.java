@@ -102,12 +102,18 @@ public class BigLibrary implements Library {
         return copies;
         
     }
-    
+   
     @Override
     public boolean isAvailable(BookCopy copy) {
         return inLibrary.contains(copy);
     }
     
+    /**
+     * Stronger spec than in Library find().  It returns the list of books that have a substring 
+     * match to the query in the book.getAuthors and book.getTitle.  The minimum length of substring match is
+     * query.length - 3.  If the substring matches are the same length then it returns the newest books first.
+     * All else being equal the books will be sorted in alpha order.
+     */   
     @Override
     public List<Book> find(String query) {
         query = query.toLowerCase();
@@ -189,8 +195,8 @@ public class BigLibrary implements Library {
             }
             int alen = lenMatch.get(a);
             int blen = lenMatch.get(b);            
-            if (alen > blen) { return 1; }
-            else if (blen < alen) { return -1; }
+            if (alen < blen) { return 1; }
+            else if (blen > alen) { return -1; }
             else { 
                 if (a.getYear() < b.getYear()) { return 1; }
                 else if (a.getYear() > b.getYear()) { return -1; }
