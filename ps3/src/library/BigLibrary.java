@@ -196,11 +196,11 @@ public class BigLibrary implements Library {
             int alen = lenMatch.get(a);
             int blen = lenMatch.get(b);            
             if (alen < blen) { return 1; }
-            else if (blen > alen) { return -1; }
+            else if (alen > blen) { return -1; }
             else { 
                 if (a.getYear() < b.getYear()) { return 1; }
                 else if (a.getYear() > b.getYear()) { return -1; }
-                else { return - a.getTitle().compareTo(b.getTitle()); }
+                else { return a.getTitle().compareTo(b.getTitle()); }
             }
         }
     }
